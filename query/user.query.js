@@ -1,4 +1,4 @@
-const signup = (_username, _password, _full_name, _email, _phone_number, _birth_day) => {
+const insertUserSchema = (_username, _password, _full_name, _email, _phone_number, _birth_day) => {
     return {
         data: {
             username: _username,
@@ -29,4 +29,8 @@ const signup = (_username, _password, _full_name, _email, _phone_number, _birth_
             }
         }
     };
+}
+
+module.exports = {
+    insertUserSchema
 }

@@ -1,17 +1,17 @@
 const {makeExecutableSchema} = require('graphql-tools')
 const merge = require('lodash.merge')
 
-const categorySchema = require('./category')
-const postsSchema = require('./posts')
+const userSchema = require('./user')
+const roleSchema = require('./role')
 
 const schema = makeExecutableSchema({
     typeDefs: [
-        categorySchema.typeDefs,
-        postsSchema.typeDefsPosts
+        userSchema.typeDefs,
+        roleSchema.typeDefs
     ],
     resolvers: merge(
-        categorySchema.resolver,
-        postsSchema.resolverPosts
+        userSchema.resolver,
+        roleSchema.resolver,
     )
 })
 

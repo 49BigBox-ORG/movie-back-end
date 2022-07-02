@@ -1,16 +1,17 @@
+const {getAllUser, insertUser} = require("../../repository/user.repository");
 
 
 const userResolver = {
     Query: {
-        posts: () => {
+        user: () => {
             return getAllUser()
         }
     },
     Mutation: {
-        insertPost: (parent, {input}, context, info) => {
-            return insertPost(input.author_id, input.title, input.published)
+        signup: (parent, {input}) => {
+            return insertUser(input)
         }
     }
 }
 
-module.exports = postsResolver;
+module.exports = userResolver;

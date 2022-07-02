@@ -1,24 +1,33 @@
 const gql = require('graphql-tag');
 
 const typeDefs = gql`
-    type Post {
+    type User {
         id: Int,
-        author_id: Int,
-        title: String,
-        updatedAt: String,
-        published: Boolean,
+        username: String,
+        password: String,
     }
 
     type Query {
-        posts: [Post]
+        user: [User]
     }
+    
     type Mutation {
-        insertPost(input: PostMutation): Boolean
+        signup(input: UserInput): UserOutput
     }
-    input PostMutation {
-        author_id: Int,
-        title: String,
-        published: Boolean,
+    
+    input UserInput {
+        username: String,
+        password: String,
+        full_name: String,
+        email: String,
+        phone_number: String,
+        birth_date: String,
+    }
+    
+    type UserOutput{
+        username: String,
+        password: String,
+        roleName: String,
     }
 `
 

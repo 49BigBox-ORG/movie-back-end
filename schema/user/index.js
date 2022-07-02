@@ -1,7 +1,7 @@
-const typeDefsPosts = require('./user.type');
-const resolverPosts = require('./user.resolver');
+const typeDefs = require('./user.type');
+const resolver = require('./user.resolver');
 
 module.exports = {
-    typeDefsPosts,
-    resolverPosts
+    typeDefs,
+    resolver
 }

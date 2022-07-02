@@ -38,7 +38,7 @@ model Profile {
     fullName      String
     email         String @unique
     phoneNumber   String @unique
-    birthdate     DateTime
+    birtday       DateTime
     createdAt     DateTime @default(now())
     user          User  @relation(fields: [userId], references: [id])
 }
