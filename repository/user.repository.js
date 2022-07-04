@@ -14,7 +14,6 @@ const getUserById = async (input) => {
             JOIN "Role" ON "UserRole"."roleId" = "Role"."id"
             WHERE "User"."id" = ${input.id}
         `
-        console.log(getUser, 'getUser')
         return user[0]
     } catch (e) {
         return e
