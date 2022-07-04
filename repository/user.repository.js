@@ -8,24 +8,6 @@ const getAllUser = async () => {
 
 const getUserById = async (input) => {
     try {
-        // const user = await prisma.user.findUnique({
-        //     where: {
-        //         id: input.id
-        //     }
-        // })
-        // console.log(user)
-        // const userRole = await prisma.userRole.findUnique({
-        //     where: {
-        //         userId: input.id
-        //     }
-        // })
-        // console.log(userRole)
-        // // return await prisma.user.findUnique({
-        // //     where: {
-        // //         id: input.Id
-        // //     }
-        // // })
-        // return{...user, ...userRole.roleId}
         const user = await prisma.$queryRaw`
             SELECT username, password, "roleName" FROM "User" 
             JOIN "UserRole" ON "UserRole"."userId" = "User"."id"
