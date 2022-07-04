@@ -5,6 +5,7 @@ const typeDefs = gql`
         id: Int,
         username: String,
         password: String,
+        profile: Profile,
     }
 
     type Query {
@@ -12,10 +13,11 @@ const typeDefs = gql`
     }
     
     type Mutation {
-        signup(input: UserInput): UserOutput
+        signup(input: SignUpInput): SignUpOutput,
+        getUserById(input: GetUserByIdInput): GetUserByIdOutput,
     }
     
-    input UserInput {
+    input SignUpInput {
         username: String,
         password: String,
         full_name: String,
@@ -24,7 +26,17 @@ const typeDefs = gql`
         birth_date: String,
     }
     
-    type UserOutput{
+    type SignUpOutput{
+        username: String,
+        password: String,
+        roleName: String,
+    }
+    
+    input GetUserByIdInput {
+        id: Int!
+    }
+    
+    type GetUserByIdOutput {
         username: String,
         password: String,
         roleName: String,

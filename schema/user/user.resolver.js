@@ -1,5 +1,4 @@
-const {getAllUser, insertUser} = require("../../repository/user.repository");
-
+const {getAllUser, getUserById, insertUser } = require("../../repository/user.repository");
 
 const userResolver = {
     Query: {
@@ -10,7 +9,10 @@ const userResolver = {
     Mutation: {
         signup: (parent, {input}) => {
             return insertUser(input)
-        }
+        },
+        getUserById: (parent, {input}) => {
+            return getUserById(input)
+        },
     }
 }
 

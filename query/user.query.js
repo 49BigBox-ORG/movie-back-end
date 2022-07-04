@@ -31,6 +31,15 @@ const insertUserSchema = (_username, _password, _full_name, _email, _phone_numbe
     };
 }
 
+const deleteUserSchema = (_id) => {
+    return {
+        where: {
+            id: _id
+        }
+    }
+}
+
 module.exports = {
-    insertUserSchema
+    insertUserSchema,
+    deleteUserSchema
 }
