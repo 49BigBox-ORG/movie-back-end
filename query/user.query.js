@@ -1,33 +1,32 @@
-const insertUserSchema = (_username, _password, _full_name, _email, _phone_number, _birth_day) => {
+const insertUserSchema = (_username, _password, _fullName, _email, _phoneNumber, _birthday) => {
     return {
+        include: {
+            userRole: true,
+            profile: true,
+            accountBalance: true,
+        },
         data: {
             username: _username,
-            password: _password
-        },
-        user_role: {
-            create: {
-                data: {
-                    role: 2, // 1 for admin, 2 is for user
-                }
-            }
-        },
-        profile: {
-            create: {
-                data: {
-                    full_name: _full_name,
+            password: _password,
+            profile: {
+                create: {
+                    fullName: _fullName,
                     email: _email,
-                    phone_number: _phone_number,
-                    birth_date: _birth_day,
-                }
-            }
+                    phoneNumber: _phoneNumber,
+                    birthday: _birthday,
+                },
+            },
+            userRole: {
+                create: {
+                    roleId: 2, // 1 for admin, 2 is for user
+                },
+            },
+            accountBalance: {
+                create: {
+                    balance: 50, // Default 50$
+                },
+            },
         },
-        account_balance: {
-            create: {
-                data: {
-                    balance: 50 // Default 50$
-                }
-            }
-        }
     };
 }
 
