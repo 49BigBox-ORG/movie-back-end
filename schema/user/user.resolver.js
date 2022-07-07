@@ -1,19 +1,20 @@
-const {getAllUser, getUserById, insertUser } = require("../../repository/user.repository");
+const {getAllUser, login, insertUser} = require('../../repository/user.repository')
 
 const userResolver = {
     Query: {
         user: () => {
             return getAllUser()
-        }
+        },
     },
     Mutation: {
         signup: (parent, {input}) => {
             return insertUser(input)
         },
-        getUserById: (parent, {input}) => {
-            return getUserById(input)
+        login: (parent, {input}, context) => {
+            console.log(context.headers.authorization)
+            return login(input)
         },
-    }
+    },
 }
 
-module.exports = userResolver;
+module.exports = userResolver
