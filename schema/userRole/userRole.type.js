@@ -1,28 +1,28 @@
-const gql = require('graphql-tag');
+const gql = require('graphql-tag')
 
 const typeDefs = gql`
     type UserRole {
-        userId: Int,
-        roleId: Int,
+        userId: Int
+        roleId: Int
     }
-    
+
     type Query {
         userRole: [UserRole]
     }
-    
+
     type Mutation {
-        getUserRoleById(input: GetUserByIdInput): UserRole,
-        updateUserRole(input: UpdateProfileInput): UserRole,
+        getUserRoleById(input: GetUserRoleByIdInput): UserRole
+        updateUserRole(input: UpdateProfileInput): UserRole
     }
-    
+
     input GetUserRoleByIdInput {
-        userId: Int!,
+        userId: Int!
     }
 
     input UpdateUserRoleInput {
-        userId: Int!,
-        roleId: Int!,
+        userId: Int!
+        roleId: Int!
     }
 `
 
-module.exports = typeDefs;
+module.exports = typeDefs
