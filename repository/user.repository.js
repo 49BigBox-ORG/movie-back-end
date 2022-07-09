@@ -1,7 +1,7 @@
-const bcrypt = require('bcryptjs')
 const {PrismaClient} = require('@prisma/client')
 const {insertUserSchema} = require('../query/user.query')
-const generateHashPassword = require('../helper/bcrypt.helper')
+const {generateToken} = require('../helper/jwt.helper')
+const {generateHashPassword, verifyPassword} = require('../helper/bcrypt.helper')
 const prisma = new PrismaClient()
 
 const getAllUser = async () => {
@@ -39,9 +39,8 @@ const login = async (input) => {
             JOIN "Profile" as P ON P."userId" = U."id"
             WHERE U."username" = ${username.toLowerCase()}
         `
-        console.log(userInfo[0])
         if (userInfo.length !== 0) {
-            const isSuccess = bcrypt.compareSync(password, userInfo[0].password)
+            const isSuccess = verifyPassword(password, userInfo[0].password)
             if (isSuccess) {
                 const accessToken = generateToken(userInfo[0])
                 return {

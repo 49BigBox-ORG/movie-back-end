@@ -5,4 +5,11 @@ const generateHashPassword = (password) => {
     return bcrypt.hashSync(password, salt)
 }
 
-module.exports = generateHashPassword
+const verifyPassword = (password, hashPassword) => {
+    return bcrypt.compareSync(password, hashPassword)
+}
+
+module.exports = {
+    generateHashPassword,
+    verifyPassword,
+}
