@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const {PrismaClient} = require('@prisma/client')
 const {insertUserSchema} = require('../query/user.query')
-const {generateToken} = require('../helper/jwt.helper')
+const generateHashPassword = require('../helper/bcrypt.helper')
 const prisma = new PrismaClient()
 
 const getAllUser = async () => {
@@ -10,8 +10,7 @@ const getAllUser = async () => {
 
 const insertUser = async (input) => {
     const {username, password, fullName, email, phoneNumber, birthday} = input
-    const salt = bcrypt.genSaltSync(10)
-    const hashPassword = bcrypt.hashSync(password, salt)
+    const hashPassword = generateHashPassword(password)
 
     try {
         await prisma.user.create(
