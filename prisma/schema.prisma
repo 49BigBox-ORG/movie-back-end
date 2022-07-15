@@ -69,12 +69,37 @@ model Movie {
   trailer         String
   description     String
   releaseDate     DateTime
+  type            MovieType         @relation(fields: [movieTypeId], references: [id])
+  status          MovieStatus?      @relation(fields: [movieStatusId], references: [id])
   price           Int
   createdAt       DateTime          @default(now())
   movieCast       MovieCast[]
   catagoryToMovie CategoryToMovie[]
   purchasedMovie  PurchasedMovie[]
   movieOnSale     MovieOnSale?
+  movieTypeId     Int
+  movieStatusId   Int?
+  MovieSource     MovieSource[]
+}
+
+model MovieStatus {
+  id     Int     @id @default(autoincrement())
+  status String  @unique
+  Movie  Movie[]
+}
+
+model MovieType {
+  id    Int     @id @default(autoincrement())
+  type  String  @unique
+  Movie Movie[]
+}
+
+model MovieSource {
+  id           Int    @id @default(autoincrement())
+  movieId      Int
+  detailSource String
+  source       String
+  movie        Movie  @relation(fields: [movieId], references: [id])
 }
 
 model MovieOnSale {
