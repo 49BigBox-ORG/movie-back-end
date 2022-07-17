@@ -2,6 +2,7 @@ const {PrismaClient} = require('@prisma/client')
 const {insertUserSchema} = require('../query/user.query')
 const {generateToken} = require('../helper/jwt.helper')
 const {generateHashPassword, verifyPassword} = require('../helper/bcrypt.helper')
+const APIError = require('../helper/api.helper')
 const prisma = new PrismaClient()
 
 const getAllUser = async () => {
@@ -13,9 +14,7 @@ const insertUser = async (input) => {
     const hashPassword = generateHashPassword(password)
 
     try {
-        await prisma.user.create(
-            insertUserSchema(username, hashPassword, fullName, email, phoneNumber, birthday)
-        )
+        await prisma.user.create(insertUserSchema(username, hashPassword, fullName, email, phoneNumber, birthday))
         return {
             username: username,
             password: password,
@@ -48,11 +47,12 @@ const login = async (input) => {
                     accessToken,
                 }
             } else {
-                // Promise.reject(Error('Password is incorrect'))
-                throw new Error('Password is incorrect. Please try again.')
+                throw new APIError({status: 404, message: 'Password is incorrect. Please try again.'})
+                // const error = new APIError(500, 'Password is incorrect. Please try again.')
+                // throw error
             }
         } else {
-            throw new Error('Username is not exist. Please sign up first or try again.')
+            throw new APIError({status: 404, message: 'Username is not exist. Please sign up first or try again.'})
         }
     } catch (error) {
         console.log(error)

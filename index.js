@@ -11,6 +11,12 @@ app.use(
     graphqlHTTP({
         schema: schema,
         graphiql: true,
+        customFormatErrorFn: (error) => {
+            return {
+                message: error.originalError.message || error.message,
+                status: error.originalError.status || 500,
+            }
+        },
     })
 )
 
