@@ -1,14 +1,16 @@
 const express = require('express')
 const app = express()
 const {graphqlHTTP} = require('express-graphql')
+const cors = require('cors')
 const schema = require('./schema')
-const {corsMiddleware} = require('./middleware/cors.middleware')
+const {corsMiddleware, corsOptions} = require('./middleware/cors.middleware')
 const port = 3000
 
 app.use(express.json())
 
 app.use(
     '/api',
+    cors(corsOptions),
     corsMiddleware,
     graphqlHTTP({
         schema: schema,
