@@ -1,4 +1,4 @@
-const {makeExecutableSchema} = require('graphql-tools')
+const {makeExecutableSchema} = require('@graphql-tools/schema')
 const merge = require('lodash.merge')
 
 const userSchema = require('./user')
@@ -13,7 +13,7 @@ const schema = makeExecutableSchema({
         roleSchema.typeDefs,
         userRoleSchema.typeDefs,
         profileSchema.typeDefs,
-        accountBalanceSchema.typeDefs
+        accountBalanceSchema.typeDefs,
     ],
     resolvers: merge(
         userSchema.resolver,
@@ -21,7 +21,7 @@ const schema = makeExecutableSchema({
         userRoleSchema.resolver,
         profileSchema.resolver,
         accountBalanceSchema.resolver
-    )
+    ),
 })
 
 module.exports = schema
