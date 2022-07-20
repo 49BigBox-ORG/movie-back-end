@@ -9,10 +9,10 @@ app.use(express.json())
 
 app.use(
     '/api',
+    corsMiddleware,
     graphqlHTTP({
         schema: schema,
         graphiql: true,
-        corsMiddleware,
         customFormatErrorFn: (error) => {
             return {
                 message: error.originalError.message || error.message,
