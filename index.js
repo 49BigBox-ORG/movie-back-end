@@ -4,6 +4,12 @@ const app = express()
 const {graphqlHTTP} = require('express-graphql')
 const schema = require('./schema')
 
+const corsOptions = {
+    origin: true,
+    credentials: true,
+    optionSuccessStatus: 200,
+}
+
 const port = 3000
 
 app.use(express.json())
@@ -14,7 +20,7 @@ app.use(function (req, res, next) {
     next()
 })
 
-app.use(cors({origin: true}))
+app.use(cors(corsOptions))
 
 app.use(
     '/api',
