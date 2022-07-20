@@ -11,22 +11,22 @@ const corsOptions = {
     optionSuccessStatus: 200,
 }
 
-const port = 3000
+const port = 8080
 
 app.use(express.json())
 
 app.use(cors(corsOptions))
 
 const middleware = (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    res.header('Access-Control-Allow-Origin: *')
+    res.header('Access-Control-Allow-Headers : Origin, X-Requested-With, Content-Type, Accept')
     next()
 }
 
 app.use(
     '/api',
     middleware,
-    allowCors,
+    // allowCors,
     graphqlHTTP({
         schema: schema,
         graphiql: true,
