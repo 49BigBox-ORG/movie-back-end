@@ -5,7 +5,7 @@ const {graphqlHTTP} = require('express-graphql')
 const schema = require('./schema')
 
 const corsOptions = {
-    origin: true,
+    origin: 'http://localhost:3000',
     credentials: true,
     optionSuccessStatus: 200,
 }
@@ -13,12 +13,6 @@ const corsOptions = {
 const port = 3000
 
 app.use(express.json())
-
-app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*') // update to match the domain you will make the request from
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-    next()
-})
 
 app.use(cors(corsOptions))
 
