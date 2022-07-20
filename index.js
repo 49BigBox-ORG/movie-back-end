@@ -5,7 +5,7 @@ const {graphqlHTTP} = require('express-graphql')
 const schema = require('./schema')
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: '*',
     credentials: true,
     optionSuccessStatus: 200,
 }
@@ -16,13 +16,15 @@ app.use(express.json())
 
 app.use(cors(corsOptions))
 
+const middleware = (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    next()
+}
+
 app.use(
     '/api',
-    function (req, res, next) {
-        res.header('Access-Control-Allow-Origin', '*')
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-        next()
-    },
+    middleware,
     graphqlHTTP({
         schema: schema,
         graphiql: true,
@@ -35,8 +37,8 @@ app.use(
     })
 )
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
-})
+// app.listen(port, () => {
+//     console.log(`Server is running on port ${port}`)
+// })
 
 module.exports = app
