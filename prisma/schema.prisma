@@ -52,7 +52,6 @@ model Gender {
   id      Int       @id @default(autoincrement())
   gender  String    @unique
   Profile Profile[]
-  Actor   Actor[]
 }
 
 model AccountBalance {
@@ -129,11 +128,10 @@ model Actor {
   id        Int         @id @default(autoincrement())
   name      String      @unique
   image     String
-  gender    Gender      @relation(fields: [genderId], references: [id])
+  gender    String
   birthday  DateTime
   createdAt DateTime    @default(now())
   movieCast MovieCast[]
-  genderId  Int
 }
 
 model MovieCast {
