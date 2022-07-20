@@ -3,6 +3,7 @@ const cors = require('cors')
 const app = express()
 const {graphqlHTTP} = require('express-graphql')
 const schema = require('./schema')
+const allowCors = require('./middleware/allowCors')
 
 const corsOptions = {
     origin: '*',
@@ -25,6 +26,7 @@ const middleware = (req, res, next) => {
 app.use(
     '/api',
     middleware,
+    allowCors,
     graphqlHTTP({
         schema: schema,
         graphiql: true,
@@ -37,8 +39,8 @@ app.use(
     })
 )
 
-// app.listen(port, () => {
-//     console.log(`Server is running on port ${port}`)
-// })
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`)
+})
 
 module.exports = app
