@@ -1,8 +1,8 @@
-const allowCors = (fn) => async (req, res) => {
+const allowCors = (fn) => async (req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', true)
     res.setHeader('Access-Control-Allow-Origin', '*')
     // another common pattern
-    // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+    res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
     res.setHeader(
         'Access-Control-Allow-Headers',
@@ -10,9 +10,10 @@ const allowCors = (fn) => async (req, res) => {
     )
     if (req.method === 'OPTIONS') {
         res.status(200).end()
-        return
+        next()
     }
-    return await fn(req, res)
+    next()
+    return await fn(req, res, next)
 }
 
 const handler = (req, res) => {

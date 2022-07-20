@@ -17,16 +17,16 @@ app.use(express.json())
 
 app.use(cors(corsOptions))
 
-const middleware = (req, res, next) => {
-    res.header('Access-Control-Allow-Origin: *')
-    res.header('Access-Control-Allow-Headers : Origin, X-Requested-With, Content-Type, Accept')
-    next()
-}
+// const middleware = (req, res, next) => {
+//     res.setHeader({key:})
+//     res.header('Access-Control-Allow-Headers : Origin, X-Requested-With, Content-Type, Accept')
+//     next()
+// }
 
 app.use(
     '/api',
-    middleware,
-    // allowCors,
+    // middleware,
+    allowCors,
     graphqlHTTP({
         schema: schema,
         graphiql: true,
