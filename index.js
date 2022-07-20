@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const {graphqlHTTP} = require('express-graphql')
 const schema = require('./schema')
-const port = 8080
+const port = 3000
 
 app.use(express.json())
 app.use(
@@ -10,6 +10,12 @@ app.use(
     graphqlHTTP({
         schema: schema,
         graphiql: true,
+        customFormatErrorFn: (error) => {
+            return {
+                message: error.originalError.message || error.message,
+                status: error.originalError.status || 500,
+            }
+        },
     })
 )
 
