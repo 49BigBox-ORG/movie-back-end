@@ -41,6 +41,7 @@ const typeDefs = gql`
 
     type LoginOutput {
         username: String
+        avatar: String
         fullName: String
         email: String
         phoneNumber: String

@@ -33,7 +33,7 @@ const login = async (input) => {
     const {username, password} = input
     try {
         const userInfo = await prisma.$queryRaw`
-            SELECT username, password, "fullName", email, "phoneNumber", "roleName" FROM "User" as U
+            SELECT username, password, "fullName", avatar, email, "phoneNumber", "roleName" FROM "User" as U
             JOIN "UserRole" as UR ON UR."userId" = U."id"
             JOIN "Role" as R ON UR."roleId" = R."id"
             JOIN "Profile" as P ON P."userId" = U."id"
