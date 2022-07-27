@@ -13,8 +13,9 @@ const generateToken = (payload) => {
 
 const decodeToken = (token) => {
     try {
-        return jwt.verify(token, process.env.JWT_SECRET)
+        return jwt.verify(token, process.env.SECRET_KEY)
     } catch (e) {
+        console.log('error decode', e)
         return null
     }
 }
