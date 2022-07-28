@@ -5,9 +5,6 @@ const typeDefs = gql`
         id: Int
         username: String
         password: String
-        profile: Profile
-        userRole: UserRole
-        accountBalance: AccountBalance
     }
 
     type Query {
