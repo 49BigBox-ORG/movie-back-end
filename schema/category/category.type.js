@@ -9,6 +9,16 @@ const typeDefs = gql`
     type Query {
         category: [Category]
     }
+
+    type Mutation {
+        insertCategory(input: CategoryInput): Category
+        deleteCategory(input: CategoryInput): Category
+        updateCategory(input: CategoryInput): Category
+    }
+
+    input CategoryInput {
+        categoryName: String!
+    }
 `
 
 module.exports = typeDefs
