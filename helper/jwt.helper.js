@@ -13,11 +13,34 @@ const generateToken = (payload) => {
 
 const decodeToken = (token) => {
     try {
-        return jwt.verify(token, process.env.SECRET_KEY)
+        return {
+            status: true,
+            data: jwt.verify(token, process.env.SECRET_KEY),
+        }
     } catch (e) {
-        console.log('error decode', e)
-        return null
+        if (e == 'TokenExpiredError: jwt expired') {
+            return {
+                status: false,
+                message: 'Session expired. Please login again!',
+            }
+        }
+        return {
+            status: false,
+            message: 'Access denied. Please try again!',
+        }
     }
+}
+
+const verifyAdmin = (token) => {
+    const decoded = decodeToken(token)
+    if (decoded.status) {
+        if (decoded.data.roleName === 'ADMIN') {
+            return {
+                status: true,
+            }
+        }
+    }
+    return decoded
 }
 
 const checkAuthen = (req, res, next) => {
@@ -34,4 +57,5 @@ module.exports = {
     generateToken,
     decodeToken,
     checkAuthen,
+    verifyAdmin,
 }
