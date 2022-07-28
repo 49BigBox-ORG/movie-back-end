@@ -8,6 +8,7 @@ const profileSchema = require('./profile')
 const accountBalanceSchema = require('./accountBalance')
 const genderSchema = require('./gender')
 const categorySchema = require('./category')
+const actorSchema = require('./actor')
 
 const schema = makeExecutableSchema({
     typeDefs: [
@@ -18,6 +19,7 @@ const schema = makeExecutableSchema({
         accountBalanceSchema.typeDefs,
         genderSchema.typeDefs,
         categorySchema.typeDefs,
+        actorSchema.typeDefs,
     ],
     resolvers: merge(
         userSchema.resolver,
@@ -26,7 +28,8 @@ const schema = makeExecutableSchema({
         profileSchema.resolver,
         accountBalanceSchema.resolver,
         genderSchema.resolver,
-        categorySchema.resolver
+        categorySchema.resolver,
+        actorSchema.resolver
     ),
 })
 
