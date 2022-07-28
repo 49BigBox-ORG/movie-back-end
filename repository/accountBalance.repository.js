@@ -30,7 +30,7 @@ const getUserBalance = async (input, accessToken) => {
         if (decoded.status) {
             const user = await prisma.user.findUnique({
                 where: {
-                    username: input.username,
+                    username: input.username.toLowerCase(),
                 },
                 include: {
                     accountBalance: true,
