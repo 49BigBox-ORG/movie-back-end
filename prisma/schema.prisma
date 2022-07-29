@@ -139,7 +139,7 @@ model Actor {
 model MovieCast {
   actorId Int
   actor   Actor @relation(fields: [actorId], references: [id])
-  movieId Int   @unique
+  movieId Int
   movie   Movie @relation(fields: [movieId], references: [id])
 
   @@id([actorId, movieId])
