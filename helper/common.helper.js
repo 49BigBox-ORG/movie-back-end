@@ -15,8 +15,6 @@ const groupBy = (arr, keyGetter) => {
 
 const refetch = (refetchCount, fn, input, status, message) => {
     if (refetchCount < 3) {
-        // refetchCount++
-        console.log(refetchCount)
         switch (refetchCount) {
             case 1:
                 console.log('Ah shit! Here we go again!')
