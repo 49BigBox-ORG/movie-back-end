@@ -6,8 +6,17 @@ const typeDefs = gql`
         actorId: Int
     }
 
+    type Query {
+        movieCast: [GetAllMovieCastOutPut]
+    }
+
     type Mutation {
         getMovieCastByMovieId(input: getMovieCastByMovieIdInput): GetMovieCastByMovieIdOutput
+    }
+
+    type GetAllMovieCastOutPut {
+        movieId: Int
+        actor: [Actor]
     }
 
     input getMovieCastByMovieIdInput {

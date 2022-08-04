@@ -1,8 +1,34 @@
 const {PrismaClient} = require('@prisma/client')
 const APIError = require('../helper/api.helper')
+const {groupBy, refetch} = require('../helper/common.helper')
 const prisma = new PrismaClient()
 
 let refetchCount = 0
+
+const getAllMovieCast = async () => {
+    try {
+        const data = await prisma.movieCast.findMany({
+            include: {
+                actor: true,
+            },
+        })
+        const newDataGroupBy = groupBy(data, (movieCast) => movieCast.movieId)
+        let responseArr = []
+        newDataGroupBy.forEach((item) => {
+            responseArr.push({
+                movieId: item[0].movieId,
+                actor: item.map((actor) => {
+                    return actor.actor
+                }),
+            })
+        })
+        refetchCount = 0
+        return responseArr
+    } catch (e) {
+        refetchCount++
+        refetch(refetchCount, getAllMovieCast, null, 400, 'Server is busy. Please try again!')
+    }
+}
 
 const getMovieCastByMovieId = async (input) => {
     const {movieId} = input
@@ -44,5 +70,6 @@ const getMovieCastByMovieId = async (input) => {
 }
 
 module.exports = {
+    getAllMovieCast,
     getMovieCastByMovieId,
 }
