@@ -10,6 +10,7 @@ const genderSchema = require('./gender')
 const categorySchema = require('./category')
 const actorSchema = require('./actor')
 const movieCastSchema = require('./movieCast')
+const movieSchema = require('./movie')
 
 const schema = makeExecutableSchema({
     typeDefs: [
@@ -22,6 +23,7 @@ const schema = makeExecutableSchema({
         categorySchema.typeDefs,
         actorSchema.typeDefs,
         movieCastSchema.typeDefs,
+        movieSchema.typeDefs,
     ],
     resolvers: merge(
         userSchema.resolver,
@@ -32,7 +34,8 @@ const schema = makeExecutableSchema({
         genderSchema.resolver,
         categorySchema.resolver,
         actorSchema.resolver,
-        movieCastSchema.resolver
+        movieCastSchema.resolver,
+        movieSchema.resolver
     ),
 })
 
