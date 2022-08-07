@@ -10,8 +10,7 @@ const userResolver = {
         signup: (parent, {input}) => {
             return insertUser(input)
         },
-        login: (parent, {input}, context) => {
-            console.log(context.headers.authorization)
+        login: (parent, {input}) => {
             return login(input)
         },
     },

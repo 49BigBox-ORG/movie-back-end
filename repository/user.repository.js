@@ -32,19 +32,38 @@ const insertUser = async (input) => {
 const login = async (input) => {
     const {username, password} = input
     try {
-        const userInfo = await prisma.$queryRaw`
-            SELECT username, password, "fullName", avatar, email, "phoneNumber", "roleName" FROM "User" as U
-            JOIN "UserRole" as UR ON UR."userId" = U."id"
-            JOIN "Role" as R ON UR."roleId" = R."id"
-            JOIN "Profile" as P ON P."userId" = U."id"
-            WHERE U."username" = ${username.toLowerCase()}
-        `
-        if (userInfo.length !== 0) {
-            const isSuccess = verifyPassword(password, userInfo[0].password)
+        const userData = await prisma.user.findUnique({
+            where: {
+                username: username.toLowerCase(),
+            },
+            include: {
+                userRole: {
+                    include: {
+                        role: true,
+                    },
+                },
+                profile: true,
+            },
+        })
+
+        if (userData) {
+            const userInfo = {
+                userId: userData.id,
+                username: userData.username,
+                password: userData.password,
+                fullName: userData.profile.fullName,
+                avatar: userData.profile.avatar,
+                birthday: userData.profile.birthday,
+                email: userData.profile.email,
+                phoneNumber: userData.profile.phoneNumber,
+                roleName: userData.userRole.role.name,
+            }
+
+            const isSuccess = verifyPassword(password, userInfo.password)
             if (isSuccess) {
-                const accessToken = generateToken(userInfo[0])
+                const accessToken = generateToken(userInfo)
                 return {
-                    ...userInfo[0],
+                    ...userInfo,
                     accessToken,
                 }
             } else {
@@ -54,8 +73,7 @@ const login = async (input) => {
             throw new APIError({status: 404, message: 'Username is not exist. Please sign up first or try again.'})
         }
     } catch (error) {
-        console.log(error)
-        return error
+        return new APIError({status: 404, message: error.message || 'Login failed. Please try again.'})
     }
 }
 
