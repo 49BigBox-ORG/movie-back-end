@@ -10,13 +10,15 @@ const getAllMovie = async () => {
             },
         })
 
-        return data.map((item) => {
+        const response = data.map((item) => {
             return {
                 ...item,
                 type: item.movieType.type,
                 status: item.movieStatus.status,
             }
         })
+
+        return response
     } catch (e) {
         console.log(e)
     }
