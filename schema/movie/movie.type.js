@@ -20,11 +20,15 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        getDetailMovie(input: getDetailMovieInput): Movie
+        getDetailMovie(input: GetDetailMovieInput): Movie
     }
 
-    input getDetailMovieInput {
+    input GetDetailMovieInput {
         id: Int!
+    }
+
+    extend type Movie {
+        isPurchased: Boolean
     }
 `
 

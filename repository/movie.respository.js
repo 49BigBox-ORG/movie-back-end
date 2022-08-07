@@ -1,4 +1,5 @@
 const {PrismaClient} = require('@prisma/client')
+const {decodeToken} = require('../helper/jwt.helper')
 const prisma = new PrismaClient()
 
 const getAllMovie = async () => {
@@ -24,7 +25,10 @@ const getAllMovie = async () => {
     }
 }
 
-const getDetailMovie = async (input) => {
+const getDetailMovie = async (input, accessToken) => {
+    let isPurchased = false
+    const decoded = decodeToken(accessToken)
+    console.log(decoded)
     try {
         const movieData = await prisma.movie.findUnique({
             where: {
@@ -45,6 +49,16 @@ const getDetailMovie = async (input) => {
             },
         })
 
+        const purchaseData = await prisma.purchasedMovie.findMany({
+            where: {
+                userId: decoded.data.userId,
+                movieId: input.id,
+            },
+        })
+        if (purchaseData !== null) {
+            isPurchased = true
+        }
+
         const categoryData = categoryToMovieData.map((item) => {
             return {
                 ...item.category,
@@ -56,6 +70,7 @@ const getDetailMovie = async (input) => {
             type: movieData.movieType.type,
             status: movieData.movieStatus.status,
             category: categoryData,
+            isPurchased,
         }
 
         return response

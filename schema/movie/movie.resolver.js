@@ -7,8 +7,9 @@ const movieResolver = {
         },
     },
     Mutation: {
-        getDetailMovie: (parent, {input}) => {
-            return getDetailMovie(input)
+        getDetailMovie: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return getDetailMovie(input, accessToken)
         },
     },
 }
