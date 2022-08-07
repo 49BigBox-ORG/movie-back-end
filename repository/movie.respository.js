@@ -26,9 +26,8 @@ const getAllMovie = async () => {
 }
 
 const getDetailMovie = async (input, accessToken) => {
-    let isPurchased = false
+    let isPurchased = null
     const decoded = decodeToken(accessToken)
-    console.log(decoded)
     try {
         const movieData = await prisma.movie.findUnique({
             where: {
@@ -49,14 +48,14 @@ const getDetailMovie = async (input, accessToken) => {
             },
         })
 
-        const purchaseData = await prisma.purchasedMovie.findMany({
-            where: {
-                userId: decoded.data.userId,
-                movieId: input.id,
-            },
-        })
-        if (purchaseData !== null) {
-            isPurchased = true
+        if (decoded.status) {
+            const purchaseData = await prisma.purchasedMovie.findMany({
+                where: {
+                    userId: decoded.data.userId,
+                    movieId: input.id,
+                },
+            })
+            isPurchased = purchaseData !== null
         }
 
         const categoryData = categoryToMovieData.map((item) => {
