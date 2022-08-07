@@ -24,6 +24,47 @@ const getAllMovie = async () => {
     }
 }
 
+const getDetailMovie = async (input) => {
+    try {
+        const movieData = await prisma.movie.findUnique({
+            where: {
+                id: input.id,
+            },
+            include: {
+                movieType: true,
+                movieStatus: true,
+            },
+        })
+
+        const categoryToMovieData = await prisma.categoryToMovie.findMany({
+            where: {
+                movieId: input.id,
+            },
+            include: {
+                category: true,
+            },
+        })
+
+        const categoryData = categoryToMovieData.map((item) => {
+            return {
+                ...item.category,
+            }
+        })
+
+        const response = {
+            ...movieData,
+            type: movieData.movieType.type,
+            status: movieData.movieStatus.status,
+            category: categoryData,
+        }
+
+        return response
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 module.exports = {
     getAllMovie,
+    getDetailMovie,
 }

@@ -18,6 +18,14 @@ const typeDefs = gql`
     type Query {
         movie: [Movie]
     }
+
+    type Mutation {
+        getDetailMovie(input: getDetailMovieInput): Movie
+    }
+
+    input getDetailMovieInput {
+        id: Int!
+    }
 `
 
 module.exports = typeDefs
