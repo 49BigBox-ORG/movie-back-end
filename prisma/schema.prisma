@@ -70,8 +70,8 @@ model Movie {
   trailer         String
   description     String
   releaseDate     DateTime
-  type            MovieType         @relation(fields: [movieTypeId], references: [id])
-  status          MovieStatus?      @relation(fields: [movieStatusId], references: [id])
+  movieType            MovieType         @relation(fields: [movieTypeId], references: [id])
+  movieStatus          MovieStatus?      @relation(fields: [movieStatusId], references: [id])
   price           Int
   createdAt       DateTime          @default(now())
   movieCast       MovieCast[]
