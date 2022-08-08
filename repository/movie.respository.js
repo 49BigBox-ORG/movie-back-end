@@ -1,6 +1,7 @@
 const {PrismaClient} = require('@prisma/client')
 const {decodeToken} = require('../helper/jwt.helper')
 const prisma = new PrismaClient()
+const APIError = require('../helper/API.helper')
 
 const getAllMovie = async () => {
     try {
@@ -90,7 +91,50 @@ const getDetailMovie = async (input, accessToken) => {
     }
 }
 
+const getSourceMovie = async (input, accessToken) => {
+    let isPurchased = null
+    const decoded = decodeToken(accessToken)
+    console.log(decoded)
+    try {
+        if (decoded.status) {
+            const purchaseData = await prisma.purchasedMovie.findMany({
+                where: {
+                    userId: decoded.data.userId,
+                    movieId: input.id,
+                },
+            })
+            isPurchased = purchaseData !== null
+        } else {
+            throw new APIError({status: 401, message: decoded.message})
+        }
+
+        if (isPurchased) {
+            const movieSourceData = await prisma.movieSource.findMany({
+                where: {
+                    movieId: input.id,
+                },
+            })
+
+            const movieData = await prisma.movie.findUnique({
+                where: {
+                    id: input.id,
+                },
+            })
+            console.log(movieSourceData)
+            return {
+                ...movieData,
+                movieSource: movieSourceData,
+            }
+        } else {
+            throw new APIError({status: 404, message: 'You need to purchase this movie!'})
+        }
+    } catch (e) {
+        return new APIError(e)
+    }
+}
+
 module.exports = {
     getAllMovie,
     getDetailMovie,
+    getSourceMovie,
 }
