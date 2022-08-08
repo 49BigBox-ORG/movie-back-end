@@ -1,7 +1,7 @@
 const {PrismaClient} = require('@prisma/client')
 const {decodeToken} = require('../helper/jwt.helper')
 const prisma = new PrismaClient()
-const APIError = require('../helper/API.helper')
+const APIError = require('../helper/api.helper')
 
 const getAllMovie = async () => {
     try {
