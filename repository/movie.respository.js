@@ -11,15 +11,13 @@ const getAllMovie = async () => {
             },
         })
 
-        const response = data.map((item) => {
+        return data.map((item) => {
             return {
                 ...item,
                 type: item.movieType.type,
                 status: item.movieStatus.status,
             }
         })
-
-        return response
     } catch (e) {
         console.log(e)
     }
@@ -64,15 +62,29 @@ const getDetailMovie = async (input, accessToken) => {
             }
         })
 
-        const response = {
+        const actorData = await prisma.movieCast.findMany({
+            where: {
+                movieId: input.id,
+            },
+            include: {
+                actor: true,
+            },
+        })
+
+        const actor = actorData.map((item) => {
+            return {
+                ...item.actor,
+            }
+        })
+
+        return {
             ...movieData,
             type: movieData.movieType.type,
             status: movieData.movieStatus.status,
             category: categoryData,
             isPurchased,
+            actor: actor,
         }
-
-        return response
     } catch (e) {
         console.log(e)
     }

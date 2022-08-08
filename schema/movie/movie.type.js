@@ -29,6 +29,7 @@ const typeDefs = gql`
 
     extend type Movie {
         isPurchased: Boolean
+        actor: [Actor]
     }
 `
 
