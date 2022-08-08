@@ -56,7 +56,7 @@ const login = async (input) => {
                 birthday: userData.profile.birthday,
                 email: userData.profile.email,
                 phoneNumber: userData.profile.phoneNumber,
-                roleName: userData.userRole.role.name,
+                roleName: userData.userRole.role.roleName,
             }
 
             const isSuccess = verifyPassword(password, userInfo.password)
