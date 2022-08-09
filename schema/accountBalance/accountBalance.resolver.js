@@ -1,4 +1,9 @@
-const {deposit, getAccountBalanceByUserId, getUserBalance} = require('../../repository/accountBalance.repository')
+const {
+    deposit,
+    getAccountBalanceByUserId,
+    getUserBalance,
+    purchaseMovie,
+} = require('../../repository/accountBalance.repository')
 
 const accountBalanceResolver = {
     Query: {
@@ -13,6 +18,10 @@ const accountBalanceResolver = {
         getUserBalance: (parent, {input}, context) => {
             const accessToken = context.headers.authorization
             return getUserBalance(input, accessToken)
+        },
+        purchaseMovie: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return purchaseMovie(input, accessToken)
         },
     },
 }

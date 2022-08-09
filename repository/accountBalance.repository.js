@@ -46,8 +46,69 @@ const getUserBalance = async (input, accessToken) => {
     }
 }
 
+const purchaseMovie = async (input, accessToken) => {
+    const decoded = decodeToken(accessToken)
+    console.log(decoded)
+    try {
+        if (decoded.status) {
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: decoded.data.userId,
+                },
+                include: {
+                    accountBalance: true,
+                },
+            })
+
+            const movie = await prisma.movie.findUnique({
+                where: {
+                    id: input.movieId,
+                },
+            })
+
+            if (user.accountBalance.balance >= movie.price) {
+                await prisma.accountBalance.update({
+                    where: {
+                        userId: user.id,
+                    },
+                    data: {
+                        balance: {
+                            decrement: movie.price,
+                        },
+                    },
+                })
+
+                await prisma.purchasedMovie.create({
+                    data: {
+                        user: {
+                            connect: {
+                                id: user.id,
+                            },
+                        },
+                        movie: {
+                            connect: {
+                                id: movie.id,
+                            },
+                        },
+                    },
+                })
+
+                return {
+                    movieId: movie.id,
+                    accountBalance: {
+                        balance: user.accountBalance.balance - movie.price,
+                    },
+                }
+            } else return new APIError({status: 403, message: 'Insufficient balance!'})
+        } else return new APIError({status: 403, message: decoded.message})
+    } catch (e) {
+        return e
+    }
+}
+
 module.exports = {
     getAccountBalanceByUserId,
     deposit,
     getUserBalance,
+    purchaseMovie,
 }

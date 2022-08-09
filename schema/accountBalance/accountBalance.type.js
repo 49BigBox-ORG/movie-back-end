@@ -13,6 +13,7 @@ const typeDefs = gql`
     type Mutation {
         getUserBalance(input: getUserBalanceInput): getUserBalanceOutput
         deposit(input: DepositInput): AccountBalance
+        purchaseMovie(input: PurchaseMovieInput): PurchaseMovieOutput
     }
 
     input AccountBalanceInput {
@@ -31,6 +32,16 @@ const typeDefs = gql`
     input DepositInput {
         userId: Int!
         deposit: Int!
+    }
+
+    input PurchaseMovieInput {
+        movieId: Int!
+        promoCode: String
+    }
+
+    type PurchaseMovieOutput {
+        movieId: Int!
+        accountBalance: AccountBalance!
     }
 `
 
