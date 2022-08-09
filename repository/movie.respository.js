@@ -48,7 +48,7 @@ const getDetailMovie = async (input, accessToken) => {
         })
 
         if (decoded.status) {
-            const purchaseData = await prisma.purchasedMovie.findMany({
+            const purchaseData = await prisma.purchasedMovie.findFirst({
                 where: {
                     userId: decoded.data.userId,
                     movieId: input.id,
