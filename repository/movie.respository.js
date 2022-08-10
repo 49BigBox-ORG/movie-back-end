@@ -28,6 +28,11 @@ const getDetailMovie = async (input, accessToken) => {
     let isPurchased = null
     const decoded = decodeToken(accessToken)
     try {
+        if (accessToken) {
+            if (!decoded.status) {
+                return new APIError({status: 401, message: decoded.message})
+            }
+        }
         const movieData = await prisma.movie.findUnique({
             where: {
                 id: input.id,
@@ -88,6 +93,7 @@ const getDetailMovie = async (input, accessToken) => {
         }
     } catch (e) {
         console.log(e)
+        return e
     }
 }
 
