@@ -123,6 +123,7 @@ const getSourceMovie = async (input, accessToken) => {
             return {
                 ...movieData,
                 movieSource: movieSourceData,
+                isPurchased,
             }
         } else {
             throw new APIError({status: 404, message: 'You need to purchase this movie!'})
