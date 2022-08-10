@@ -30,7 +30,7 @@ const getUserBalance = async (input, accessToken) => {
         if (decoded.status) {
             const user = await prisma.user.findUnique({
                 where: {
-                    username: input.username.toLowerCase(),
+                    id: decoded.data.userId.toLowerCase(),
                 },
                 include: {
                     accountBalance: true,
@@ -106,9 +106,35 @@ const purchaseMovie = async (input, accessToken) => {
     }
 }
 
+const getUserBalanceWithAccessToken = async (accessToken) => {
+    try {
+        if (accessToken === 'null') {
+            return new APIError({status: 403, message: 'You must be login to access this page!'})
+        }
+        const decoded = decodeToken(accessToken)
+        if (decoded.status) {
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: decoded.data.userId,
+                },
+                include: {
+                    accountBalance: true,
+                },
+            })
+            return {
+                username: user.username,
+                balance: user.accountBalance.balance,
+            }
+        } else return new APIError({status: 401, message: decoded.message})
+    } catch (e) {
+        return e
+    }
+}
+
 module.exports = {
     getAccountBalanceByUserId,
     deposit,
     getUserBalance,
     purchaseMovie,
+    getUserBalanceWithAccessToken,
 }

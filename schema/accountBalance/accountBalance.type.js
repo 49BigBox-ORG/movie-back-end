@@ -8,6 +8,7 @@ const typeDefs = gql`
 
     type Query {
         accountBalance(input: AccountBalanceInput): AccountBalance
+        getUserBalanceWithAccessToken: AccountBalance
     }
 
     type Mutation {
