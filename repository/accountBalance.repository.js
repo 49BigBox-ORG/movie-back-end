@@ -11,17 +11,26 @@ const getAccountBalanceByUserId = async (input) => {
     })
 }
 
-const deposit = async (input) => {
-    return await prisma.accountBalance.update({
-        where: {
-            userId: input.userId,
-        },
-        data: {
-            balance: {
-                increment: input.deposit,
-            },
-        },
-    })
+const deposit = async (input, accessToken) => {
+    try {
+        const decoded = decodeToken(accessToken)
+        if (decoded.status) {
+            return await prisma.accountBalance.update({
+                where: {
+                    userId: decoded.data.userId,
+                },
+                data: {
+                    balance: {
+                        increment: +input.amount,
+                    },
+                },
+            })
+        } else {
+            return new APIError({status: 401, message: decoded.message})
+        }
+    } catch (e) {
+        return e
+    }
 }
 
 const getUserBalance = async (input, accessToken) => {

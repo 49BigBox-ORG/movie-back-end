@@ -17,8 +17,9 @@ const accountBalanceResolver = {
         },
     },
     Mutation: {
-        deposit: (input) => {
-            return deposit(input)
+        deposit: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return deposit(input, accessToken)
         },
         getUserBalance: (parent, {input}, context) => {
             const accessToken = context.headers.authorization

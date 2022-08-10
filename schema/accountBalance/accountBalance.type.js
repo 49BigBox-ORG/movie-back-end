@@ -31,8 +31,7 @@ const typeDefs = gql`
     }
 
     input DepositInput {
-        userId: Int!
-        deposit: Int!
+        amount: Int!
     }
 
     input PurchaseMovieInput {
