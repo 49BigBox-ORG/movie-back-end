@@ -27,7 +27,6 @@ const getAllMovie = async () => {
 const getDetailMovie = async (input, accessToken) => {
     let isPurchased = null
     const decoded = decodeToken(accessToken)
-    console.log(accessToken)
     try {
         if (accessToken !== 'null') {
             if (!decoded.status) {
