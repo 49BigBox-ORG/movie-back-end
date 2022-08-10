@@ -29,7 +29,7 @@ const getDetailMovie = async (input, accessToken) => {
     const decoded = decodeToken(accessToken)
     console.log(accessToken)
     try {
-        if (accessToken) {
+        if (accessToken !== 'null') {
             if (!decoded.status) {
                 return new APIError({status: 401, message: decoded.message})
             }
