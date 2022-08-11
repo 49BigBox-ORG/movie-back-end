@@ -118,7 +118,7 @@ const purchaseMovie = async (input, accessToken) => {
 const getUserBalanceWithAccessToken = async (accessToken) => {
     try {
         if (accessToken === 'null') {
-            return new APIError({status: 403, message: 'You must be login to watch or purchase this content!'})
+            return new APIError({status: 406, message: 'You must be login to watch or purchase this content!'})
         }
         const decoded = decodeToken(accessToken)
         if (decoded.status) {
