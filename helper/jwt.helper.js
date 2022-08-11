@@ -16,17 +16,20 @@ const decodeToken = (token) => {
         return {
             status: true,
             data: jwt.verify(token, process.env.SECRET_KEY),
+            statusCode: 200,
         }
     } catch (e) {
         if (e == 'TokenExpiredError: jwt expired') {
             return {
                 status: false,
                 message: 'Session expired. Please login again!',
+                statusCode: 401,
             }
         }
         return {
             status: false,
             message: 'Access denied. Please try again!',
+            statusCode: 401,
         }
     }
 }
@@ -38,24 +41,19 @@ const verifyAdmin = (token) => {
             return {
                 status: true,
             }
+        } else {
+            return {
+                status: false,
+                message: 'You dont have permission to access this page!',
+                statusCode: 403,
+            }
         }
     }
     return decoded
 }
 
-const checkAuthen = (req, res, next) => {
-    const token = req.headers['x-access-token']
-    const decoded = decodeToken(token)
-    if (decoded) {
-        next()
-    } else {
-        res.status(401).send('Unauthorized')
-    }
-}
-
 module.exports = {
     generateToken,
     decodeToken,
-    checkAuthen,
     verifyAdmin,
 }
