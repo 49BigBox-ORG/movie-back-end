@@ -75,7 +75,7 @@ model Movie {
   price           Int
   createdAt       DateTime          @default(now())
   movieCast       MovieCast[]
-  catagoryToMovie CategoryToMovie[]
+  categoryToMovie CategoryToMovie[]
   purchasedMovie  PurchasedMovie[]
   movieOnSale     MovieOnSale?
   movieTypeId     Int
