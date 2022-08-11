@@ -52,6 +52,8 @@ const getUserBalance = async (input, accessToken) => {
         } else return new APIError({status: 403, message: decoded.message})
     } catch (e) {
         return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+    } finally {
+        await prisma.$disconnect()
     }
 }
 
@@ -112,6 +114,8 @@ const purchaseMovie = async (input, accessToken) => {
         } else return new APIError({status: 403, message: decoded.message})
     } catch (e) {
         return e
+    } finally {
+        await prisma.$disconnect()
     }
 }
 
@@ -137,6 +141,8 @@ const getUserBalanceWithAccessToken = async (accessToken) => {
         } else return new APIError({status: 401, message: decoded.message})
     } catch (e) {
         return e
+    } finally {
+        await prisma.$disconnect()
     }
 }
 

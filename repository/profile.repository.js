@@ -33,6 +33,8 @@ const getUserProfile = async (input, accessToken) => {
         }
     } catch (error) {
         return error
+    } finally {
+        await prisma.$disconnect()
     }
 }
 

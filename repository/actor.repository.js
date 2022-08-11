@@ -24,6 +24,8 @@ const insertActor = async (input, token) => {
         }
     } catch (e) {
         return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+    } finally {
+        await prisma.$disconnect()
     }
 }
 

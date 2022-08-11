@@ -20,6 +20,8 @@ const getAllMovie = async () => {
         })
     } catch (e) {
         console.log(e)
+    } finally {
+        await prisma.$disconnect()
     }
 }
 
@@ -93,6 +95,8 @@ const getDetailMovie = async (input, accessToken) => {
     } catch (e) {
         console.log(e)
         return e
+    } finally {
+        await prisma.$disconnect()
     }
 }
 
@@ -135,6 +139,8 @@ const getSourceMovie = async (input, accessToken) => {
         }
     } catch (e) {
         return new APIError(e)
+    } finally {
+        await prisma.$disconnect()
     }
 }
 
@@ -195,6 +201,8 @@ const getAllMovieAdmin = async (accessToken) => {
     } catch (e) {
         console.log(e)
         return e
+    } finally {
+        await prisma.$disconnect()
     }
 }
 

@@ -27,6 +27,8 @@ const getAllMovieCast = async () => {
     } catch (e) {
         refetchCount++
         refetch(refetchCount, getAllMovieCast, null, 400, 'Server is busy. Please try again!')
+    } finally {
+        await prisma.$disconnect()
     }
 }
 
@@ -52,20 +54,14 @@ const getMovieCastByMovieId = async (input) => {
             actors: actorArray,
         }
     } catch (e) {
-        if (refetchCount < 3) {
-            refetchCount++
-            switch (refetchCount) {
-                case 1:
-                    console.log('Ah shit! Here we go again!')
-                    break
-                case 2:
-                    console.log('Oh no! No no no no no no!')
-                    break
-                default:
-                    console.log('Good night! It is enough time coding today!')
-            }
-            return getMovieCastByMovieId(input)
-        } else return new APIError({status: 400, message: 'Server is busy. Please try again!'})
+        console.log(e)
+        if (e == 'PrismaClientInitializationError') {
+            console.log(true)
+        }
+        refetchCount++
+        refetch(refetchCount, getMovieCastByMovieId, input, 400, 'Server is busy. Please try again!')
+    } finally {
+        await prisma.$disconnect()
     }
 }
 

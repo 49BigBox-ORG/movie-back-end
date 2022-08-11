@@ -1,19 +1,28 @@
-const {PrismaClient} = require('@prisma/client');
+const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
+const APIError = require('../helper/api.helper')
 
 const getAllUserRole = async () => {
-    return await prisma.userRole.findMany()
+    try {
+        return await prisma.userRole.findMany()
+    } catch (e) {
+        return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+    } finally {
+        await prisma.$disconnect()
+    }
 }
 
 const getUserRoleById = async (input) => {
-    try{
+    try {
         return await prisma.userRole.findUnique({
             where: {
                 userId: input.userId,
-            }
+            },
         })
-    }catch (e) {
-        return null
+    } catch (e) {
+        return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+    } finally {
+        await prisma.$disconnect()
     }
 }
 
@@ -26,12 +35,14 @@ const updateUserRole = async (input) => {
                 },
                 data: {
                     userId: input.userId,
-                    roleId: input.roleId
-                }
+                    roleId: input.roleId,
+                },
             })
             return true
         } catch (e) {
-            return false
+            return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+        } finally {
+            await prisma.$disconnect()
         }
     } else {
         return false
@@ -41,5 +52,5 @@ const updateUserRole = async (input) => {
 module.exports = {
     getAllUserRole,
     getUserRoleById,
-    updateUserRole
+    updateUserRole,
 }

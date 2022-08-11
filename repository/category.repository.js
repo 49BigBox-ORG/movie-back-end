@@ -28,6 +28,8 @@ const insertCategory = async (input, accessToken) => {
                 status: 400,
                 message: `Something went wrong. Please try again!`,
             })
+        } finally {
+            await prisma.$disconnect()
         }
     } else {
         return new APIError({status: 400, message: 'You are not ADMIN. Please try with administrator account!'})
@@ -59,6 +61,8 @@ const deleteCategory = async (input, accessToken) => {
                 status: 400,
                 message: `Something went wrong. Please try again.`,
             })
+        } finally {
+            await prisma.$disconnect()
         }
     } else {
         return new APIError({status: 400, message: 'Access denied. Please try with administrator account!'})

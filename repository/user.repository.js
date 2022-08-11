@@ -6,7 +6,13 @@ const APIError = require('../helper/api.helper')
 const prisma = new PrismaClient()
 
 const getAllUser = async () => {
-    return await prisma.user.findMany()
+    try {
+        return await prisma.user.findMany()
+    } catch (e) {
+        return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+    } finally {
+        await prisma.$disconnect()
+    }
 }
 
 const insertUser = async (input) => {
@@ -26,6 +32,8 @@ const insertUser = async (input) => {
             status: 'error',
             message: e,
         }
+    } finally {
+        await prisma.$disconnect()
     }
 }
 
@@ -74,6 +82,8 @@ const login = async (input) => {
         }
     } catch (error) {
         return new APIError({status: 404, message: error.message || 'Login failed. Please try again.'})
+    } finally {
+        await prisma.$disconnect()
     }
 }
 
