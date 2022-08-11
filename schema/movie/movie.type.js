@@ -17,6 +17,7 @@ const typeDefs = gql`
 
     type Query {
         movie: [Movie]
+        getAllMovieAdmin: [Movie]
     }
 
     type Mutation {

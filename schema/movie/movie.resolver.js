@@ -1,9 +1,13 @@
-const {getAllMovie, getDetailMovie, getSourceMovie} = require('../../repository/movie.respository')
+const {getAllMovie, getDetailMovie, getSourceMovie, getAllMovieAdmin} = require('../../repository/movie.respository')
 
 const movieResolver = {
     Query: {
         movie: () => {
             return getAllMovie()
+        },
+        getAllMovieAdmin: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return getAllMovieAdmin(accessToken)
         },
     },
     Mutation: {
