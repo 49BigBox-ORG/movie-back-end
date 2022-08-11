@@ -2,8 +2,9 @@ const {getAllMovie, getDetailMovie, getSourceMovie, getAllMovieAdmin} = require(
 
 const movieResolver = {
     Query: {
-        movie: () => {
-            return getAllMovie()
+        movie: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return getAllMovie(accessToken)
         },
         getAllMovieAdmin: (parent, {input}, context) => {
             const accessToken = context.headers.authorization
