@@ -3,63 +3,23 @@ const {decodeToken, verifyAdmin} = require('../helper/jwt.helper')
 const prisma = new PrismaClient()
 const APIError = require('../helper/api.helper')
 
-const getAllMovie = async (accessToken) => {
+const getAllMovie = async () => {
     try {
-        const isAdmin = verifyAdmin(accessToken)
-        if (isAdmin.status) {
-            const dataMovie = await prisma.movie.findMany({
-                include: {
-                    movieType: true,
-                    movieStatus: true,
-                    movieCast: {
-                        include: {
-                            actor: true,
-                        },
-                    },
-                    categoryToMovie: {
-                        include: {
-                            category: true,
-                        },
-                    },
-                    movieSource: true,
-                },
-            })
-
-            return dataMovie.map((itemMovie) => {
-                const actor = itemMovie.movieCast
-                    .map((itemMovieCast) => {
-                        return {
-                            name: itemMovieCast.actor.name,
-                            image: itemMovieCast.actor.image,
-                            id: itemMovieCast.actor.id,
-                            movieId: itemMovieCast.movieId,
-                        }
-                    })
-                    .filter((itemActor) => {
-                        return itemActor.movieId === itemMovie.id
-                    })
-
-                const category = itemMovie.categoryToMovie.map((itemCategoryToMovie) => {
-                    return {
-                        categoryName: itemCategoryToMovie.category.categoryName,
-                        movieId: itemCategoryToMovie.movieId,
-                        id: itemCategoryToMovie.category.id,
-                    }
-                })
-                return {
-                    ...itemMovie,
-                    actor: actor,
-                    type: itemMovie.movieType.type,
-                    status: itemMovie.movieStatus.status,
-                    category: category,
-                    movieSource: itemMovie.movieSource,
-                }
-            })
-        }
-        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
+        const data = await prisma.movie.findMany({
+            include: {
+                movieType: true,
+                movieStatus: true,
+            },
+        })
+        return data.map((item) => {
+            return {
+                ...item,
+                type: item.movieType.type,
+                status: item.movieStatus.status,
+            }
+        })
     } catch (e) {
         console.log(e)
-        return e
     }
 }
 
