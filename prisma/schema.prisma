@@ -80,7 +80,7 @@ model Movie {
   movieOnSale     MovieOnSale?
   movieTypeId     Int
   movieStatusId   Int?
-  MovieSource     MovieSource[]
+  movieSource     MovieSource[]
 }
 
 model MovieStatus {
