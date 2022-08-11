@@ -4,6 +4,8 @@ const {graphqlHTTP} = require('express-graphql')
 const cors = require('cors')
 const schema = require('./schema')
 const {corsOptions} = require('./middleware/cors.middleware')
+const {PrismaClient} = require('@prisma/client')
+const prisma = new PrismaClient()
 const port = 3000
 
 app.use(express.json())
@@ -15,6 +17,7 @@ app.use(
         schema: schema,
         graphiql: true,
         customFormatErrorFn: (error) => {
+            prisma.$disconnect()
             return {
                 message: error.originalError?.message || error.message,
                 status: error.originalError?.status || 500,
