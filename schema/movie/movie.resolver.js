@@ -1,4 +1,10 @@
-const {getAllMovie, getDetailMovie, getSourceMovie, getAllMovieAdmin} = require('../../repository/movie.respository')
+const {
+    getAllMovie,
+    getDetailMovie,
+    getSourceMovie,
+    getAllMovieAdmin,
+    updateMovieBasic,
+} = require('../../repository/movie.respository')
 
 const movieResolver = {
     Query: {
