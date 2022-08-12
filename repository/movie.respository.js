@@ -221,7 +221,9 @@ const updateMovieBasic = async (input, accessToken) => {
                     releaseDate: new Date(releaseDate),
                     director,
                     movieStatus: {
-                        status,
+                        data: {
+                            status,
+                        },
                     },
                 },
                 include: {
