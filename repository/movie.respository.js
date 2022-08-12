@@ -215,6 +215,8 @@ const updateMovieBasic = async (input, accessToken) => {
                 where: {id},
                 data: {
                     ...input,
+                    price: parseInt(input.price),
+                    releaseDate: parseInt(input.releaseDate),
                 },
             })
         }

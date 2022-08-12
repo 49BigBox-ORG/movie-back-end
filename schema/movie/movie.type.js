@@ -53,7 +53,6 @@ const typeDefs = gql`
         title: String
         director: String
         price: Int
-        trailer: String
         description: String
         status: String
         releaseDate: String
