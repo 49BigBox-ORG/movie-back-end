@@ -211,6 +211,12 @@ const updateMovieBasic = async (input, accessToken) => {
         const {id, title, description, image, price, director, status, releaseDate} = input
         const isAdmin = verifyAdmin(accessToken)
         if (isAdmin.status) {
+            const statusId = await prisma.movieStatus.findUnique({
+                where: {
+                    status,
+                },
+            })
+
             return await prisma.movie.update({
                 where: {id},
                 data: {
@@ -218,13 +224,9 @@ const updateMovieBasic = async (input, accessToken) => {
                     description,
                     image,
                     price: +price,
-                    releaseDate: new Date(releaseDate),
+                    releaseDate: new Date(+releaseDate),
                     director,
-                    movieStatus: {
-                        update: {
-                            status,
-                        },
-                    },
+                    movieStatusId: statusId.id,
                 },
                 include: {
                     movieStatus: true,
