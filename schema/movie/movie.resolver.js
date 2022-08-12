@@ -19,6 +19,10 @@ const movieResolver = {
             const accessToken = context.headers.authorization
             return getSourceMovie(input, accessToken)
         },
+        updateMovieBasic: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return updateMovieBasic(input, accessToken)
+        },
     },
 }
 

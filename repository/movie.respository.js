@@ -206,9 +206,31 @@ const getAllMovieAdmin = async (accessToken) => {
     }
 }
 
+const updateMovieBasic = async (input, accessToken) => {
+    try {
+        const {id} = input
+        const isAdmin = verifyAdmin(accessToken)
+        if (isAdmin.status) {
+            return await prisma.movie.update({
+                where: {id},
+                data: {
+                    ...input,
+                },
+            })
+        }
+        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
+    } catch (e) {
+        console.log(e)
+        return e
+    } finally {
+        await prisma.$disconnect()
+    }
+}
+
 module.exports = {
     getAllMovie,
     getDetailMovie,
     getSourceMovie,
     getAllMovieAdmin,
+    updateMovieBasic,
 }

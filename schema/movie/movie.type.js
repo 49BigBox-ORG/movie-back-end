@@ -23,6 +23,7 @@ const typeDefs = gql`
     type Mutation {
         getDetailMovie(input: GetDetailMovieInput): Movie
         getSourceMovie(input: GetSourceMovieInput): Movie
+        updateMovieBasic(input: UpdateMovieBasicInput): Movie
     }
 
     input GetDetailMovieInput {
@@ -44,6 +45,18 @@ const typeDefs = gql`
         movieId: Int
         detailSource: String
         source: String
+    }
+
+    input UpdateMovieBasicInput {
+        id: Int!
+        image: String
+        title: String
+        director: String
+        price: Int
+        trailer: String
+        description: String
+        status: String
+        releaseDate: String
     }
 `
 
