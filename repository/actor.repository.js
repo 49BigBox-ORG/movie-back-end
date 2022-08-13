@@ -73,8 +73,31 @@ const updateActor = async (input, accessToken) => {
     }
 }
 
+const deleteActor = async (input, accessToken) => {
+    try {
+        const isAdmin = verifyAdmin(accessToken)
+        if (isAdmin.status) {
+            const {id} = input
+            await prisma.actor.delete({where: {id}})
+            return {
+                status: true,
+            }
+        }
+        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
+    } catch (e) {
+        console.log(e)
+        if (e.code === 'P2025') {
+            return new APIError({status: 400, message: 'Actor is not exist. Please check your input!'})
+        }
+        return e
+    } finally {
+        await prisma.$disconnect()
+    }
+}
+
 module.exports = {
     getAllActor,
     insertActor,
     updateActor,
+    deleteActor,
 }

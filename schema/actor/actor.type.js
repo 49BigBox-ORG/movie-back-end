@@ -16,6 +16,7 @@ const typeDefs = gql`
     type Mutation {
         insertActor(input: InsertActorInput): StatusOutput
         updateActor(input: UpdateActorInput): StatusOutput
+        deleteActor(input: DeleteActorInput): StatusOutput
     }
 
     input InsertActorInput {
@@ -31,6 +32,10 @@ const typeDefs = gql`
         image: String
         birthday: String
         genderId: Int
+    }
+
+    input DeleteActorInput {
+        id: Int!
     }
 
     extend type Actor {

@@ -1,4 +1,4 @@
-const {getAllActor, insertActor, updateActor} = require('../../repository/actor.repository')
+const {getAllActor, insertActor, updateActor, deleteActor} = require('../../repository/actor.repository')
 
 const actorResolver = {
     Query: {
@@ -15,6 +15,10 @@ const actorResolver = {
         updateActor: (parent, {input}, context) => {
             const accessToken = context.headers.authorization
             return updateActor(input, accessToken)
+        },
+        deleteActor: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return deleteActor(input, accessToken)
         },
     },
 }
