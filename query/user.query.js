@@ -7,7 +7,7 @@ const insertUserSchema = (_username, _password, _fullName, _email, _phoneNumber,
             accountBalance: true,
         },
         data: {
-            username: _username,
+            username: _username.toLowerCase(),
             password: _password,
             profile: {
                 create: {
