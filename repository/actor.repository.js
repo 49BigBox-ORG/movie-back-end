@@ -37,6 +37,9 @@ const insertActor = async (input, accessToken) => {
         }
         throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
     } catch (e) {
+        if (e.code === 'P2002') {
+            return new APIError({status: 400, message: 'Duplicate actor. Please check your input!'})
+        }
         return e
     } finally {
         await prisma.$disconnect()
