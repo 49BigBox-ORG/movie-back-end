@@ -6,6 +6,7 @@ const {
     updateMovieBasic,
     insertMovie,
     deleteMovie,
+    updateMovieCategory,
 } = require('../../repository/movie.respository')
 
 const movieResolver = {
@@ -38,6 +39,10 @@ const movieResolver = {
         deleteMovie: (parent, {input}, context) => {
             const accessToken = context.headers.authorization
             return deleteMovie(input, accessToken)
+        },
+        updateMovieCategory: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return updateMovieCategory(input, accessToken)
         },
     },
 }
