@@ -2,8 +2,9 @@ const {getAllActor, insertActor} = require('../../repository/actor.repository')
 
 const actorResolver = {
     Query: {
-        actor: () => {
-            return getAllActor()
+        actor: (arent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return getAllActor(accessToken)
         },
     },
     Mutation: {

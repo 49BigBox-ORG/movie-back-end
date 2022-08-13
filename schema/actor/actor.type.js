@@ -32,6 +32,10 @@ const typeDefs = gql`
         birthday: String
         genderId: Int
     }
+
+    extend type Actor {
+        genderId: Int
+    }
 `
 
 module.exports = typeDefs
