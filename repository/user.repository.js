@@ -127,8 +127,60 @@ const login = async (input) => {
     }
 }
 
+const updateUserAdmin = async (input, accessToken) => {
+    try {
+        const isAdmin = verifyAdmin(accessToken)
+        if (isAdmin.status) {
+            const {id, fullName, email, avatar, phoneNumber, birthday, genderId, roleName} = input
+
+            const roleIdData = await prisma.role.findUnique({
+                where: {
+                    roleName,
+                },
+            })
+
+            await prisma.user.update({
+                where: {
+                    id,
+                },
+                data: {
+                    profile: {
+                        update: {
+                            fullName,
+                            email,
+                            phoneNumber,
+                            birthday: new Date(+birthday),
+                            avatar,
+                            genderId,
+                        },
+                    },
+                    userRole: {
+                        update: {
+                            roleId: roleIdData.id,
+                        },
+                    },
+                },
+                include: {
+                    profile: true,
+                    userRole: true,
+                },
+            })
+            return {
+                status: true,
+            }
+        }
+        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
+    } catch (e) {
+        console.log(e)
+        return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+    } finally {
+        await prisma.$disconnect()
+    }
+}
+
 module.exports = {
     getAllUser,
     signup,
     login,
+    updateUserAdmin,
 }

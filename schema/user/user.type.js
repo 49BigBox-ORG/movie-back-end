@@ -14,6 +14,7 @@ const typeDefs = gql`
     type Mutation {
         signup(input: SignUpInput): SignUpOutput
         login(input: LoginInput): LoginOutput
+        updateUserAdmin(input: UpdateUserAdminInput): UpdateStatusOutput
     }
 
     type GetAllUserOutput {
@@ -57,6 +58,22 @@ const typeDefs = gql`
         phoneNumber: String
         roleName: String
         accessToken: String
+    }
+
+    input UpdateUserAdminInput {
+        id: Int!
+        username: String
+        fullName: String
+        email: String
+        phoneNumber: String
+        birthday: String
+        avatar: String
+        roleName: String
+        genderId: Int
+    }
+
+    type UpdateStatusOutput {
+        status: Boolean
     }
 `
 
