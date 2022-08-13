@@ -1,4 +1,5 @@
-const insertUserSchema = (_username, _password, _fullName, _email, _phoneNumber, _birthday) => {
+const insertUserSchema = (_username, _password, _fullName, _email, _phoneNumber, _birthday, _genderId) => {
+    const defaultAvatar = 'https://cdn-icons-png.flaticon.com/512/1053/1053244.png?w=360'
     return {
         include: {
             userRole: true,
@@ -12,8 +13,10 @@ const insertUserSchema = (_username, _password, _fullName, _email, _phoneNumber,
                 create: {
                     fullName: _fullName,
                     email: _email,
+                    avatar: defaultAvatar,
                     phoneNumber: _phoneNumber,
-                    birthday: _birthday,
+                    birthday: new Date(+_birthday),
+                    genderId: _genderId,
                 },
             },
             userRole: {
@@ -27,18 +30,9 @@ const insertUserSchema = (_username, _password, _fullName, _email, _phoneNumber,
                 },
             },
         },
-    };
-}
-
-const deleteUserSchema = (_id) => {
-    return {
-        where: {
-            id: _id
-        }
     }
 }
 
 module.exports = {
     insertUserSchema,
-    deleteUserSchema
 }

@@ -15,12 +15,14 @@ const getAllUser = async () => {
     }
 }
 
-const insertUser = async (input) => {
-    const {username, password, fullName, email, phoneNumber, birthday} = input
+const signup = async (input) => {
+    const {username, password, fullName, email, phoneNumber, birthday, genderId} = input
     const hashPassword = generateHashPassword(password)
 
     try {
-        await prisma.user.create(insertUserSchema(username, hashPassword, fullName, email, phoneNumber, birthday))
+        await prisma.user.create(
+            insertUserSchema(username, hashPassword, fullName, email, phoneNumber, birthday, genderId)
+        )
         return {
             username: username,
             password: password,
@@ -28,10 +30,22 @@ const insertUser = async (input) => {
         }
     } catch (e) {
         console.log(e)
-        return {
-            status: 'error',
-            message: e,
+        if (e.code === 'P2002') {
+            switch (e.meta.target[0]) {
+                case 'username':
+                    return new APIError({status: 400, message: 'Username is already exist. Please try another one!'})
+                case 'phoneNumber':
+                    return new APIError({
+                        status: 400,
+                        message: 'Phone number is already exist. Please try another one!',
+                    })
+                case 'email':
+                    return new APIError({status: 400, message: 'Email is already exist. Please try another one!'})
+                default:
+                    return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+            }
         }
+        return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
     } finally {
         await prisma.$disconnect()
     }
@@ -89,6 +103,6 @@ const login = async (input) => {
 
 module.exports = {
     getAllUser,
-    insertUser,
+    signup,
     login,
 }

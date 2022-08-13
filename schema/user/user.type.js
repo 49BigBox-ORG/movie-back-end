@@ -23,6 +23,7 @@ const typeDefs = gql`
         email: String
         phoneNumber: String
         birthday: String
+        genderId: Int
     }
 
     type SignUpOutput {
