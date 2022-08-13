@@ -25,6 +25,7 @@ const typeDefs = gql`
         phoneNumber: String
         birthday: String
         roleName: String
+        genderId: Int
     }
 
     input SignUpInput {

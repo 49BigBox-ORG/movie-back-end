@@ -28,6 +28,7 @@ const getAllUser = async (accessToken) => {
                     phoneNumber: item.profile.phoneNumber,
                     birthday: item.profile.birthday,
                     roleName: item.userRole.role.roleName,
+                    genderId: item.profile.genderId,
                 }
             })
         }
