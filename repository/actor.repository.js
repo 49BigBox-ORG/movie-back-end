@@ -40,7 +40,34 @@ const insertActor = async (input, token) => {
     }
 }
 
+const updateActor = async (input, accessToken) => {
+    try {
+        const isAdmin = verifyAdmin(accessToken)
+        if (isAdmin.status) {
+            const {id, name, image, birthday, genderId} = input
+            await prisma.actor.update({
+                where: {id},
+                data: {
+                    name,
+                    image,
+                    birthday: new Date(+birthday),
+                    genderId,
+                },
+            })
+            return {
+                status: true,
+            }
+        }
+        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
+    } catch (e) {
+        return e
+    } finally {
+        await prisma.$disconnect()
+    }
+}
+
 module.exports = {
     getAllActor,
     insertActor,
+    updateActor,
 }

@@ -1,4 +1,4 @@
-const {getAllActor, insertActor} = require('../../repository/actor.repository')
+const {getAllActor, insertActor, updateActor} = require('../../repository/actor.repository')
 
 const actorResolver = {
     Query: {
@@ -12,14 +12,9 @@ const actorResolver = {
             const accessToken = context.headers.authorization
             return insertActor(input, accessToken)
         },
-        updateActor: () => {
-            return {
-                id: 1,
-                name: 'John Doe',
-                image: 'https://randomuser.me/api/portraits/',
-                birthday: '01/01/2000',
-                gender: 'Male',
-            }
+        updateActor: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return updateActor(input, accessToken)
         },
     },
 }
