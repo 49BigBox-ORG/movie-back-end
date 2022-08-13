@@ -171,7 +171,19 @@ const updateUserAdmin = async (input, accessToken) => {
         }
         throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
     } catch (e) {
-        console.log(e)
+        if (e.code === 'P2002') {
+            switch (e.meta.target[0]) {
+                case 'email':
+                    return new APIError({status: 400, message: 'Email is already exist. Please try another one!'})
+                case 'phoneNumber':
+                    return new APIError({
+                        status: 400,
+                        message: 'Phone number is already exist. Please try another one!',
+                    })
+                default:
+                    return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+            }
+        }
         return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
     } finally {
         await prisma.$disconnect()
