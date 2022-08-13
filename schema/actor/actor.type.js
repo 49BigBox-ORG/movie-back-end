@@ -14,7 +14,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        insertActor(input: InsertActorInput): Actor
+        insertActor(input: InsertActorInput): StatusOutput
         updateActor(input: UpdateActorInput): StatusOutput
     }
 

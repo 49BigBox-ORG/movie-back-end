@@ -17,24 +17,27 @@ const getAllActor = async (accessToken) => {
     }
 }
 
-const insertActor = async (input, token) => {
+const insertActor = async (input, accessToken) => {
     try {
-        const {name, image, birthday, genderId} = input
-        const isAdmin = verifyAdmin(token)
+        const isAdmin = verifyAdmin(accessToken)
         if (isAdmin.status) {
-            return await prisma.actor.create({
+            const {name, image, birthday, genderId} = input
+            console.log(name, image, birthday, genderId)
+            await prisma.actor.create({
                 data: {
                     name,
                     image,
-                    birthday,
+                    birthday: new Date(+birthday),
                     genderId,
                 },
             })
-        } else {
-            return new APIError({status: 400, message: 'You are not ADMIN. Please try with administrator account!'})
+            return {
+                status: true,
+            }
         }
+        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
     } catch (e) {
-        return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+        return e
     } finally {
         await prisma.$disconnect()
     }
@@ -45,6 +48,7 @@ const updateActor = async (input, accessToken) => {
         const isAdmin = verifyAdmin(accessToken)
         if (isAdmin.status) {
             const {id, name, image, birthday, genderId} = input
+            console.log(id, name, image, birthday, genderId)
             await prisma.actor.update({
                 where: {id},
                 data: {
