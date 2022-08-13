@@ -1,4 +1,4 @@
-const {getAllUser, login, signup, updateUserAdmin} = require('../../repository/user.repository')
+const {getAllUser, login, signup, updateUserAdmin, deleteUserAdmin} = require('../../repository/user.repository')
 
 const userResolver = {
     Query: {
@@ -17,6 +17,10 @@ const userResolver = {
         updateUserAdmin: (parent, {input}, context) => {
             const accessToken = context.headers.authorization
             return updateUserAdmin(input, accessToken)
+        },
+        deleteUserAdmin: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return deleteUserAdmin(input, accessToken)
         },
     },
 }

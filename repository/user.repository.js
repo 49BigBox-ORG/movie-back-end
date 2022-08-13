@@ -190,9 +190,69 @@ const updateUserAdmin = async (input, accessToken) => {
     }
 }
 
+const deleteUserAdmin = async (input, accessToken) => {
+    try {
+        const isAdmin = verifyAdmin(accessToken)
+        if (isAdmin.status) {
+            const {id} = input
+
+            const deleteAccountBalance = prisma.accountBalance.deleteMany({
+                where: {
+                    userId: id,
+                },
+            })
+
+            const deleteUserRole = prisma.userRole.deleteMany({
+                where: {
+                    userId: id,
+                },
+            })
+
+            const deleteProfile = prisma.profile.deleteMany({
+                where: {
+                    userId: id,
+                },
+            })
+
+            const deletePurchasedMovie = prisma.purchasedMovie.deleteMany({
+                where: {
+                    userId: id,
+                },
+            })
+
+            const deleteUser = prisma.user.delete({
+                where: {
+                    id,
+                },
+            })
+
+            await prisma.$transaction([
+                deleteAccountBalance,
+                deleteUserRole,
+                deleteProfile,
+                deletePurchasedMovie,
+                deleteUser,
+            ])
+
+            return {
+                status: true,
+            }
+        }
+        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
+    } catch (e) {
+        if (e.code === 'P2025') {
+            return new APIError({status: 400, message: "User doesn't exits. Please try again!"})
+        }
+        return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+    } finally {
+        await prisma.$disconnect()
+    }
+}
+
 module.exports = {
     getAllUser,
     signup,
     login,
     updateUserAdmin,
+    deleteUserAdmin,
 }

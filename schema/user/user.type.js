@@ -14,7 +14,8 @@ const typeDefs = gql`
     type Mutation {
         signup(input: SignUpInput): SignUpOutput
         login(input: LoginInput): LoginOutput
-        updateUserAdmin(input: UpdateUserAdminInput): UpdateStatusOutput
+        updateUserAdmin(input: UpdateUserAdminInput): StatusOutput
+        deleteUserAdmin(input: DeleteUserAdminInput): StatusOutput
     }
 
     type GetAllUserOutput {
@@ -72,8 +73,12 @@ const typeDefs = gql`
         genderId: Int
     }
 
-    type UpdateStatusOutput {
+    type StatusOutput {
         status: Boolean
+    }
+
+    input DeleteUserAdminInput {
+        id: Int!
     }
 `
 
