@@ -2,8 +2,9 @@ const {getAllUser, login, signup} = require('../../repository/user.repository')
 
 const userResolver = {
     Query: {
-        user: () => {
-            return getAllUser()
+        user: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return getAllUser(accessToken)
         },
     },
     Mutation: {

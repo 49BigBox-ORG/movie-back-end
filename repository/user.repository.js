@@ -1,14 +1,39 @@
 const {PrismaClient} = require('@prisma/client')
 const {insertUserSchema} = require('../query/user.query')
-const {generateToken} = require('../helper/jwt.helper')
+const {generateToken, verifyAdmin} = require('../helper/jwt.helper')
 const {generateHashPassword, verifyPassword} = require('../helper/bcrypt.helper')
 const APIError = require('../helper/api.helper')
 const prisma = new PrismaClient()
 
-const getAllUser = async () => {
+const getAllUser = async (accessToken) => {
     try {
-        return await prisma.user.findMany()
+        const isAdmin = verifyAdmin(accessToken)
+        if (isAdmin.status) {
+            const data = await prisma.user.findMany({
+                include: {
+                    profile: true,
+                    userRole: {
+                        include: {
+                            role: true,
+                        },
+                    },
+                },
+            })
+            return data.map((item) => {
+                return {
+                    ...item,
+                    fullName: item.profile.fullName,
+                    avatar: item.profile.avatar,
+                    email: item.profile.email,
+                    phoneNumber: item.profile.phoneNumber,
+                    birthday: item.profile.birthday,
+                    roleName: item.userRole.role.roleName,
+                }
+            })
+        }
+        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
     } catch (e) {
+        console.log(e)
         return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
     } finally {
         await prisma.$disconnect()

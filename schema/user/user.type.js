@@ -8,12 +8,23 @@ const typeDefs = gql`
     }
 
     type Query {
-        user: [User]
+        user: [GetAllUserOutput]
     }
 
     type Mutation {
         signup(input: SignUpInput): SignUpOutput
         login(input: LoginInput): LoginOutput
+    }
+
+    type GetAllUserOutput {
+        id: Int
+        username: String
+        avatar: String
+        fullName: String
+        email: String
+        phoneNumber: String
+        birthday: String
+        roleName: String
     }
 
     input SignUpInput {
