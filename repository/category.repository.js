@@ -4,7 +4,13 @@ const prisma = new PrismaClient()
 const APIError = require('../helper/api.helper')
 
 const getAllCategory = async () => {
-    return await prisma.category.findMany()
+    try {
+        return await prisma.category.findMany()
+    } catch (e) {
+        return e
+    } finally {
+        await prisma.$disconnect()
+    }
 }
 
 const insertCategory = async (input, accessToken) => {
