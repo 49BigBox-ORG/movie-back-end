@@ -17,6 +17,7 @@ const typeDefs = gql`
     type Mutation {
         getUserProfile(input: getUserProfileInput): GetUserProfileOutput
         updateProfile(input: UpdateProfileInput): Profile
+        updateAvatar(input: UpdateAvatar): AvatarOutput
     }
 
     input getUserProfileInput {
@@ -39,6 +40,14 @@ const typeDefs = gql`
         email: String
         phoneNumber: String
         birthday: String
+    }
+
+    input UpdateAvatar {
+        avatar: String!
+    }
+
+    type AvatarOutput {
+        avatar: String!
     }
 `
 

@@ -56,8 +56,30 @@ const updateProfile = async (input) => {
     }
 }
 
+const updateAvatar = async (input, accessToken) => {
+    try {
+        const decoded = decodeToken(accessToken)
+        if (decoded.status) {
+            return await prisma.profile.update({
+                where: {
+                    userId: decoded.data.userId,
+                },
+                data: {
+                    avatar: input.avatar,
+                },
+            })
+        } else {
+            throw new APIError({status: 403, message: isValidToken.message})
+        }
+    } catch (e) {
+        console.log(e)
+        return e
+    }
+}
+
 module.exports = {
     getAllProfile,
     getUserProfile,
     updateProfile,
+    updateAvatar,
 }
