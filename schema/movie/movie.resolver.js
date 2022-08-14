@@ -4,6 +4,7 @@ const {
     getSourceMovie,
     getAllMovieAdmin,
     updateMovieBasic,
+    insertMovie,
 } = require('../../repository/movie.respository')
 
 const movieResolver = {
@@ -28,6 +29,10 @@ const movieResolver = {
         updateMovieBasic: (parent, {input}, context) => {
             const accessToken = context.headers.authorization
             return updateMovieBasic(input, accessToken)
+        },
+        insertMovie: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return insertMovie(input, accessToken)
         },
     },
 }

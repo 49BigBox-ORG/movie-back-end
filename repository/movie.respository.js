@@ -242,10 +242,107 @@ const updateMovieBasic = async (input, accessToken) => {
     }
 }
 
+const insertMovie = async (input, accessToken) => {
+    try {
+        const {
+            title,
+            description,
+            image,
+            trailer,
+            price,
+            director,
+            releaseDate,
+            movieTypeId,
+            movieStatusId,
+            categoryId,
+            actorId,
+            source,
+        } = input
+
+        console.log(actorId)
+        console.log(categoryId)
+
+        const isAdmin = verifyAdmin(accessToken)
+
+        if (isAdmin.status) {
+            const movie = await prisma.movie.create({
+                data: {
+                    title,
+                    description,
+                    image,
+                    trailer,
+                    price: +price,
+                    releaseDate: new Date(+releaseDate),
+                    director,
+                    movieType: {
+                        connect: {
+                            id: movieTypeId,
+                        },
+                    },
+                    movieStatus: {
+                        connect: {
+                            id: movieStatusId,
+                        },
+                    },
+                },
+            })
+
+            console.log(movie)
+
+            const dataActor = actorId.map((item) => {
+                return {
+                    actorId: item,
+                    movieId: movie.id,
+                }
+            })
+
+            await prisma.movieCast.createMany({
+                data: dataActor,
+            })
+
+            const dataCategory = categoryId.map((item) => {
+                return {
+                    categoryId: item,
+                    movieId: movie.id,
+                }
+            })
+
+            await prisma.categoryToMovie.createMany({
+                data: dataCategory,
+            })
+
+            const dataSource = source.map((item) => {
+                return {
+                    ...item,
+                    movieId: movie.id,
+                }
+            })
+
+            await prisma.movieSource.createMany({
+                data: dataSource,
+            })
+
+            return {
+                status: true,
+            }
+        }
+        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
+    } catch (e) {
+        console.log(e)
+        if (e.code === 'P2002') {
+            return new APIError({status: 400, message: 'Movie already exists'})
+        }
+        return e
+    } finally {
+        await prisma.$disconnect()
+    }
+}
+
 module.exports = {
     getAllMovie,
     getDetailMovie,
     getSourceMovie,
     getAllMovieAdmin,
     updateMovieBasic,
+    insertMovie,
 }

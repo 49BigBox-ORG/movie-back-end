@@ -24,6 +24,7 @@ const typeDefs = gql`
         getDetailMovie(input: GetDetailMovieInput): Movie
         getSourceMovie(input: GetSourceMovieInput): Movie
         updateMovieBasic(input: UpdateMovieBasicInput): Movie
+        insertMovie(input: InsertMovieInput): StatusOutput
     }
 
     input GetDetailMovieInput {
@@ -56,6 +57,26 @@ const typeDefs = gql`
         description: String
         status: String
         releaseDate: String
+    }
+
+    input InsertMovieInput {
+        title: String!
+        image: String
+        description: String
+        director: String
+        trailer: String
+        releaseDate: String
+        price: Int
+        movieTypeId: Int
+        movieStatusId: Int
+        categoryId: [Int]
+        actorId: [Int]
+        source: [Source]
+    }
+
+    input Source {
+        detailSource: String
+        source: String
     }
 `
 
