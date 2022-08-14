@@ -69,7 +69,7 @@ const updateAvatar = async (input, accessToken) => {
                 },
             })
         } else {
-            throw new APIError({status: 403, message: isValidToken.message})
+            throw new APIError({status: 403, message: decoded.message})
         }
     } catch (e) {
         console.log(e)
