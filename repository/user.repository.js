@@ -283,7 +283,7 @@ const getUserInfo = async (accessToken) => {
         }
         throw new APIError({status: 403, message: decoded.message})
     } catch (e) {
-        return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+        return e
     } finally {
         await prisma.$disconnect()
     }
