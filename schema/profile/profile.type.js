@@ -16,7 +16,7 @@ const typeDefs = gql`
 
     type Mutation {
         getUserProfile(input: getUserProfileInput): GetUserProfileOutput
-        updateProfile(input: UpdateProfileInput): Profile
+        updateProfile(input: UpdateProfileInput): UpdateProfileOutput
         updateAvatar(input: UpdateAvatar): AvatarOutput
     }
 
@@ -35,11 +35,19 @@ const typeDefs = gql`
     }
 
     input UpdateProfileInput {
-        userId: Int!
         fullName: String
         email: String
         phoneNumber: String
         birthday: String
+        genderId: Int
+    }
+
+    type UpdateProfileOutput {
+        fullName: String
+        email: String
+        phoneNumber: String
+        birthday: String
+        genderId: Int
     }
 
     input UpdateAvatar {

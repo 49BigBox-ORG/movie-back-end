@@ -38,21 +38,26 @@ const getUserProfile = async (input, accessToken) => {
     }
 }
 
-const updateProfile = async (input) => {
+const updateProfile = async (input, accessToken) => {
     try {
-        return await prisma.profile.update({
-            where: {
-                id: input.id,
-            },
-            data: {
-                fullName: input.fullName,
-                email: input.email,
-                phoneNumber: input.phoneNumber,
-                birthday: input.birthday,
-            },
-        })
+        const decoded = decodeToken(accessToken)
+        if (decoded.status) {
+            return await prisma.profile.update({
+                where: {
+                    userId: decoded.data.userId,
+                },
+                data: {
+                    ...input,
+                    birthday: new Date(+input.birthday),
+                },
+            })
+        } else {
+            throw new APIError({status: 403, message: decoded.message})
+        }
     } catch (e) {
-        return null
+        return e
+    } finally {
+        await prisma.$disconnect()
     }
 }
 
@@ -74,6 +79,8 @@ const updateAvatar = async (input, accessToken) => {
     } catch (e) {
         console.log(e)
         return e
+    } finally {
+        await prisma.$disconnect()
     }
 }
 
