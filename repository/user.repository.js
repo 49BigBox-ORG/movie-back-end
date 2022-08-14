@@ -1,6 +1,6 @@
 const {PrismaClient} = require('@prisma/client')
 const {insertUserSchema} = require('../query/user.query')
-const {generateToken, verifyAdmin} = require('../helper/jwt.helper')
+const {generateToken, verifyAdmin, decodeToken} = require('../helper/jwt.helper')
 const {generateHashPassword, verifyPassword} = require('../helper/bcrypt.helper')
 const APIError = require('../helper/api.helper')
 const prisma = new PrismaClient()
@@ -249,10 +249,51 @@ const deleteUserAdmin = async (input, accessToken) => {
     }
 }
 
+const getUserInfo = async (accessToken) => {
+    try {
+        const decoded = decodeToken(accessToken)
+        if (decoded.status) {
+            const {userId} = decoded.data
+            const userData = await prisma.user.findUnique({
+                where: {
+                    id: userId,
+                },
+                include: {
+                    profile: true,
+                    userRole: true,
+                    accountBalance: true,
+                    purchasedMovie: {
+                        include: {
+                            movie: true,
+                        },
+                    },
+                },
+            })
+            return {
+                username: userData.username,
+                avatar: userData.profile.avatar,
+                fullName: userData.profile.fullName,
+                email: userData.profile.email,
+                phoneNumber: userData.profile.phoneNumber,
+                birthday: userData.profile.birthday,
+                genderId: userData.profile.genderId,
+                balance: userData.accountBalance.balance,
+                purchasedMovie: userData.purchasedMovie.map((movie) => movie.movie),
+            }
+        }
+        throw new APIError({status: 403, message: decoded.message})
+    } catch (e) {
+        return new APIError({status: 400, message: 'Something went wrong. Please try again!'})
+    } finally {
+        await prisma.$disconnect()
+    }
+}
+
 module.exports = {
     getAllUser,
     signup,
     login,
     updateUserAdmin,
     deleteUserAdmin,
+    getUserInfo,
 }

@@ -9,6 +9,7 @@ const typeDefs = gql`
 
     type Query {
         user: [GetAllUserOutput]
+        getUserInfo: GetUserInfoOutput
     }
 
     type Mutation {
@@ -28,6 +29,18 @@ const typeDefs = gql`
         birthday: String
         roleName: String
         genderId: Int
+    }
+
+    type GetUserInfoOutput {
+        username: String
+        avatar: String
+        fullName: String
+        email: String
+        phoneNumber: String
+        birthday: String
+        genderId: Int
+        balance: Int
+        purchasedMovie: [Movie]
     }
 
     input SignUpInput {
