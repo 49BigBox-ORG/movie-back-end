@@ -5,6 +5,7 @@ const {
     getAllMovieAdmin,
     updateMovieBasic,
     insertMovie,
+    deleteMovie,
 } = require('../../repository/movie.respository')
 
 const movieResolver = {
@@ -33,6 +34,10 @@ const movieResolver = {
         insertMovie: (parent, {input}, context) => {
             const accessToken = context.headers.authorization
             return insertMovie(input, accessToken)
+        },
+        deleteMovie: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return deleteMovie(input, accessToken)
         },
     },
 }

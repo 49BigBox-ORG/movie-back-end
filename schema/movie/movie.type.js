@@ -25,6 +25,7 @@ const typeDefs = gql`
         getSourceMovie(input: GetSourceMovieInput): Movie
         updateMovieBasic(input: UpdateMovieBasicInput): Movie
         insertMovie(input: InsertMovieInput): StatusOutput
+        deleteMovie(input: DeleteMovieInput): StatusOutput
     }
 
     input GetDetailMovieInput {
@@ -77,6 +78,10 @@ const typeDefs = gql`
     input Source {
         detailSource: String
         source: String
+    }
+
+    input DeleteMovieInput {
+        id: Int!
     }
 `
 

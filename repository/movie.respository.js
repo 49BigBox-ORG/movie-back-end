@@ -338,6 +338,54 @@ const insertMovie = async (input, accessToken) => {
     }
 }
 
+const deleteMovie = async (input, accessToken) => {
+    try {
+        const isAdmin = verifyAdmin(accessToken)
+        if (isAdmin.status) {
+            const {id} = input
+
+            const deleteMovieCast = prisma.movieCast.deleteMany({
+                where: {
+                    movieId: id,
+                },
+            })
+
+            const deleteMovieSource = prisma.movieSource.deleteMany({
+                where: {
+                    movieId: id,
+                },
+            })
+
+            const deleteCategoryToMovie = prisma.categoryToMovie.deleteMany({
+                where: {
+                    movieId: id,
+                },
+            })
+
+            const deleteMovie = prisma.movie.delete({
+                where: {
+                    id,
+                },
+            })
+
+            await prisma.$transaction([deleteMovieCast, deleteMovieSource, deleteCategoryToMovie, deleteMovie])
+
+            return {
+                status: true,
+            }
+        }
+        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
+    } catch (e) {
+        console.log(e)
+        if (e.code === 'P2025') {
+            return new APIError({status: 400, message: 'Movie not found'})
+        }
+        return e
+    } finally {
+        await prisma.$disconnect()
+    }
+}
+
 module.exports = {
     getAllMovie,
     getDetailMovie,
@@ -345,4 +393,5 @@ module.exports = {
     getAllMovieAdmin,
     updateMovieBasic,
     insertMovie,
+    deleteMovie,
 }
