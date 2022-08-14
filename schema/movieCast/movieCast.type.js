@@ -12,11 +12,12 @@ const typeDefs = gql`
 
     type Mutation {
         getMovieCastByMovieId(input: getMovieCastByMovieIdInput): GetMovieCastByMovieIdOutput
+        updateMovieActor(input: UpdateMovieActorInput): StatusOutput
     }
 
     type GetAllMovieCastOutPut {
         movieId: Int
-        actor: [Actor]
+        actorId: [Actor]
     }
 
     input getMovieCastByMovieIdInput {
@@ -26,6 +27,11 @@ const typeDefs = gql`
     type GetMovieCastByMovieIdOutput {
         movieId: Int
         actors: [Actor]
+    }
+
+    input UpdateMovieActorInput {
+        movieId: Int!
+        actorIdArr: [Int]
     }
 `
 

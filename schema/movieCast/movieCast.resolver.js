@@ -1,4 +1,4 @@
-const {getAllMovieCast, getMovieCastByMovieId} = require('../../repository/movieCast.repository')
+const {getAllMovieCast, getMovieCastByMovieId, updateMovieActor} = require('../../repository/movieCast.repository')
 
 const movieCastResolver = {
     Query: {
@@ -9,6 +9,10 @@ const movieCastResolver = {
     Mutation: {
         getMovieCastByMovieId: (parent, {input}) => {
             return getMovieCastByMovieId(input)
+        },
+        updateMovieActor: (parent, {input}, context) => {
+            const accessToken = context.headers.authorization
+            return updateMovieActor(input, accessToken)
         },
     },
 }

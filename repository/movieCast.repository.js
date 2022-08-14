@@ -1,6 +1,7 @@
 const {PrismaClient} = require('@prisma/client')
 const APIError = require('../helper/api.helper')
 const {groupBy, refetch} = require('../helper/common.helper')
+const {verifyAdmin} = require('../helper/jwt.helper')
 const prisma = new PrismaClient()
 
 let refetchCount = 0
@@ -65,7 +66,39 @@ const getMovieCastByMovieId = async (input) => {
     }
 }
 
+const updateMovieActor = async (input, accessToken) => {
+    try {
+        const isAdmin = verifyAdmin(accessToken)
+        if (isAdmin.status) {
+            const {movieId, actorIdArr} = input
+            await prisma.movieCast.deleteMany({
+                where: {
+                    movieId,
+                },
+            })
+            const data = actorIdArr.map((item) => {
+                return {
+                    movieId,
+                    actorId: item,
+                }
+            })
+            await prisma.movieCast.createMany({
+                data,
+            })
+            return {
+                status: true,
+            }
+        }
+        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
+    } catch (e) {
+        return e
+    } finally {
+        await prisma.$disconnect()
+    }
+}
+
 module.exports = {
     getAllMovieCast,
     getMovieCastByMovieId,
+    updateMovieActor,
 }
