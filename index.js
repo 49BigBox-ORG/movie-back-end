@@ -3,6 +3,8 @@ const app = express()
 const {graphqlHTTP} = require('express-graphql')
 const cors = require('cors')
 const schema = require('./schema')
+const os = require('os')
+const formData = require('express-form-data')
 const {corsOptions} = require('./middleware/cors.middleware')
 const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
@@ -10,9 +12,16 @@ const port = 3000
 
 app.use(express.json())
 
+const options = {
+    uploadDir: os.tmpdir(),
+    autoClean: true,
+}
+
 app.use(
     '/api',
     cors(corsOptions),
+    formData.parse(options),
+    formData.stream(),
     graphqlHTTP({
         schema: schema,
         graphiql: true,
