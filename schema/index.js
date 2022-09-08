@@ -11,6 +11,7 @@ const categorySchema = require('./category')
 const actorSchema = require('./actor')
 const movieCastSchema = require('./movieCast')
 const movieSchema = require('./movie')
+const fileUploadSchema = require('./fileUpload')
 
 const schema = makeExecutableSchema({
     typeDefs: [
@@ -24,6 +25,7 @@ const schema = makeExecutableSchema({
         actorSchema.typeDefs,
         movieCastSchema.typeDefs,
         movieSchema.typeDefs,
+        fileUploadSchema.typeDefs,
     ],
     resolvers: merge(
         userSchema.resolver,
@@ -35,7 +37,8 @@ const schema = makeExecutableSchema({
         categorySchema.resolver,
         actorSchema.resolver,
         movieCastSchema.resolver,
-        movieSchema.resolver
+        movieSchema.resolver,
+        fileUploadSchema.resolver
     ),
 })
 
