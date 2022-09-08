@@ -281,7 +281,7 @@ const getUserInfo = async (accessToken) => {
                 purchasedMovie: userData.purchasedMovie.map((movie) => movie.movie),
             }
         }
-        throw new APIError({status: 403, message: decoded.message})
+        throw new APIError({status: 401, message: decoded.message})
     } catch (e) {
         return e
     } finally {
