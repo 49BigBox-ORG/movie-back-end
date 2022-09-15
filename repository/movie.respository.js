@@ -388,10 +388,10 @@ const deleteMovie = async (input, accessToken) => {
 
 const updateMovieCategory = async (input, accessToken) => {
     try {
-        const {id, categoryId} = input
+        const {id, categoryIdArr} = input
         const isAdmin = verifyAdmin(accessToken)
         if (isAdmin.status) {
-            const dataCategory = categoryId.map((item) => {
+            const dataCategory = categoryIdArr.map((item) => {
                 return {
                     categoryId: item,
                     movieId: id,

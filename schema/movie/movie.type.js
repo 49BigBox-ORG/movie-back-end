@@ -87,7 +87,7 @@ const typeDefs = gql`
 
     input UpdateMovieCategoryInput {
         id: Int!
-        categoryId: [Int]
+        categoryIdArr: [Int]
     }
 `
 
