@@ -121,6 +121,9 @@ const getSourceMovie = async (input, accessToken) => {
                 where: {
                     movieId: input.id,
                 },
+                include: {
+                    movieType: true,
+                },
             })
 
             const movieData = await prisma.movie.findUnique({
@@ -128,11 +131,44 @@ const getSourceMovie = async (input, accessToken) => {
                     id: input.id,
                 },
             })
-            console.log(movieSourceData)
+
+            const categoryToMovieData = await prisma.categoryToMovie.findMany({
+                where: {
+                    movieId: input.id,
+                },
+                include: {
+                    category: true,
+                },
+            })
+
+            const categoryData = categoryToMovieData.map((item) => {
+                return {
+                    ...item.category,
+                }
+            })
+
+            const actorData = await prisma.movieCast.findMany({
+                where: {
+                    movieId: input.id,
+                },
+                include: {
+                    actor: true,
+                },
+            })
+
+            const actor = actorData.map((item) => {
+                return {
+                    ...item.actor,
+                }
+            })
+
             return {
                 ...movieData,
                 movieSource: movieSourceData,
+                type: movieData.movieType.type,
+                category: categoryData,
                 isPurchased,
+                actor: actor,
             }
         } else {
             throw new APIError({status: 404, message: 'You need to purchase this movie!'})
