@@ -121,14 +121,14 @@ const getSourceMovie = async (input, accessToken) => {
                 where: {
                     movieId: input.id,
                 },
-                include: {
-                    movieType: true,
-                },
             })
 
             const movieData = await prisma.movie.findUnique({
                 where: {
                     id: input.id,
+                },
+                include: {
+                    movieType: true,
                 },
             })
 
