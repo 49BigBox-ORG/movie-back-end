@@ -27,6 +27,7 @@ const typeDefs = gql`
         insertMovie(input: InsertMovieInput): StatusOutput
         deleteMovie(input: DeleteMovieInput): StatusOutput
         updateMovieCategory(input: UpdateMovieCategoryInput): StatusOutput
+        updateMovieSource(input: UpdateMovieSourceInput): StatusOutput
     }
 
     input GetDetailMovieInput {
@@ -88,6 +89,11 @@ const typeDefs = gql`
     input UpdateMovieCategoryInput {
         movieId: Int!
         categoryIdArr: [Int]
+    }
+
+    input UpdateMovieSourceInput {
+        movieId: Int!
+        movieSourceArr: [Source]
     }
 `
 

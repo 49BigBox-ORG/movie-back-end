@@ -460,6 +460,43 @@ const updateMovieCategory = async (input, accessToken) => {
     }
 }
 
+const updateMovieSource = async (input, accessToken) => {
+    try {
+        const {movieId, movieSourceArr} = input
+        const isAdmin = verifyAdmin(accessToken)
+        if (isAdmin.status) {
+            const dataSource = movieSourceArr.map((item) => {
+                return {
+                    ...item,
+                    movieId: movieId,
+                }
+            })
+
+            await prisma.movieSource.deleteMany({
+                where: {
+                    movieId,
+                },
+            })
+
+            await prisma.movieSource.createMany({
+                data: dataSource,
+            })
+
+            return {
+                status: true,
+            }
+        }
+        throw new APIError({status: isAdmin.statusCode, message: isAdmin.message})
+    } catch (e) {
+        if (e.code === 'P2003') {
+            return new APIError({status: 400, message: 'Movie is not found'})
+        }
+        return e
+    } finally {
+        await prisma.$disconnect()
+    }
+}
+
 module.exports = {
     getAllMovie,
     getDetailMovie,
@@ -469,4 +506,5 @@ module.exports = {
     insertMovie,
     deleteMovie,
     updateMovieCategory,
+    updateMovieSource,
 }
