@@ -388,19 +388,19 @@ const deleteMovie = async (input, accessToken) => {
 
 const updateMovieCategory = async (input, accessToken) => {
     try {
-        const {id, categoryIdArr} = input
+        const {movieId, categoryIdArr} = input
         const isAdmin = verifyAdmin(accessToken)
         if (isAdmin.status) {
             const dataCategory = categoryIdArr.map((item) => {
                 return {
                     categoryId: item,
-                    movieId: id,
+                    movieId,
                 }
             })
 
             await prisma.categoryToMovie.deleteMany({
                 where: {
-                    movieId: id,
+                    movieId,
                 },
             })
 
